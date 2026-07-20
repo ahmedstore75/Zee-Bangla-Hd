@@ -2,7 +2,6 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport fix to prevent mobile desktop mode unnatural stretching -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IPTV Live - Pro Max</title>
     <!-- Tailwind CSS -->
@@ -106,23 +105,23 @@
             color: #ffffff !important;
         }
 
-        /* Main Grid Responsive Layout Rule */
+        /* Responsive Layout Rules */
         .app-main-grid {
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
+            gap: 1rem;
         }
 
-        /* Applies 2-Column Desktop layout ONLY when real screen resolution/aspect ratio allows */
-        @media screen and (min-width: 1024px) and (min-aspect-ratio: 13/9) {
+        /* Mobile Landscape & Desktop Grid Fix */
+        @media screen and (min-aspect-ratio: 1/1) {
             .app-main-grid {
                 display: grid !important;
-                grid-template-columns: 2.2fr 1fr !important;
+                grid-template-columns: 1.8fr 1.2fr !important;
                 align-items: start;
             }
             .sidebar-height {
-                height: calc(100vh - 180px) !important;
-                max-height: 600px !important;
+                height: calc(100vh - 130px) !important;
+                max-height: 520px !important;
             }
         }
 
@@ -196,73 +195,73 @@
 <body class="min-h-screen flex flex-col justify-between">
 
     <!-- Header / Navbar -->
-    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-4 py-2.5">
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-4 py-2">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
             
             <!-- Logo & Title -->
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/30 border border-blue-400/30">
-                    <i class="fa-solid fa-circle-play text-xl animate-pulse"></i>
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-700 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/30 border border-blue-400/30">
+                    <i class="fa-solid fa-circle-play text-lg animate-pulse"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h1 id="appTitle" class="text-sm font-bold tracking-wide text-white">আইপি টিভি লাইভ</h1>
-                        <span class="pro-badge text-[9px] font-black px-1.5 py-0.5 rounded tracking-wider uppercase">PRO MAX</span>
+                        <h1 id="appTitle" class="text-xs font-bold tracking-wide text-white">আইপি টিভি লাইভ</h1>
+                        <span class="pro-badge text-[8px] font-black px-1 py-0.5 rounded tracking-wider uppercase">PRO MAX</span>
                     </div>
-                    <p id="statusText" class="text-[10px] text-slate-400">অনলাইন স্ট্রিমিং প্লেয়ার</p>
+                    <p id="statusText" class="text-[9px] text-slate-400">অনলাইন স্ট্রিমিং প্লেয়ার</p>
                 </div>
             </div>
 
             <!-- Header Menu Button -->
             <div class="relative">
-                <button onclick="toggleMenu()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 text-xs text-slate-200 border border-slate-700 transition flex items-center gap-2 shadow-sm">
+                <button onclick="toggleMenu()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 text-xs text-slate-200 border border-slate-700 transition flex items-center gap-1.5 shadow-sm">
                     <i class="fa-solid fa-bars text-blue-400"></i>
                     <span id="menuBtnText" class="hidden sm:inline">মেনু</span>
                 </button>
 
                 <!-- Dropdown Menu Box -->
-                <div id="headerMenu" class="hidden absolute right-0 mt-2 w-56 rounded-xl bg-slate-900/95 border border-slate-800 shadow-2xl z-50 p-2 space-y-1 backdrop-blur-xl">
+                <div id="headerMenu" class="hidden absolute right-0 mt-2 w-52 rounded-xl bg-slate-900/95 border border-slate-800 shadow-2xl z-50 p-2 space-y-1 backdrop-blur-xl">
                     
-                    <button onclick="showFavorites(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
+                    <button onclick="showFavorites(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
                         <i class="fa-solid fa-star text-amber-400 text-xs w-4 text-center"></i>
                         <span id="mFavText" class="font-medium">ফেভারিট চ্যানেল</span>
                     </button>
 
-                    <button onclick="showRecents(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
+                    <button onclick="showRecents(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
                         <i class="fa-solid fa-clock-rotate-left text-purple-400 text-xs w-4 text-center"></i>
                         <span id="mRecentText" class="font-medium">সাম্প্রতিক প্লে</span>
                     </button>
 
                     <hr class="border-slate-800 my-1">
 
-                    <button onclick="fetchPlaylist(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
+                    <button onclick="fetchPlaylist(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
                         <i class="fa-solid fa-rotate-right text-blue-400 text-xs w-4 text-center"></i>
                         <span id="mRefreshText" class="font-medium">প্লে-লিস্ট রিফ্রেশ</span>
                     </button>
 
-                    <button onclick="toggleLayout(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
+                    <button onclick="toggleLayout(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
                         <i id="layoutIcon" class="fa-solid fa-border-all text-teal-400 text-xs w-4 text-center"></i>
                         <span id="layoutText" class="font-medium">গ্রিড ভিউ চালু করুন</span>
                     </button>
 
-                    <button onclick="toggleTheme(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
+                    <button onclick="toggleTheme(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
                         <i id="themeIcon" class="fa-solid fa-sun text-yellow-400 text-xs w-4 text-center"></i>
                         <span id="themeText" class="font-medium">লাইট থিম করুন</span>
                     </button>
 
-                    <button onclick="toggleLanguage(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
+                    <button onclick="toggleLanguage(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
                         <i class="fa-solid fa-language text-emerald-400 text-xs w-4 text-center"></i>
                         <span id="langText" class="font-medium">English Language</span>
                     </button>
 
                     <hr class="border-slate-800 my-1">
 
-                    <a href="https://facebook.com/ahmed.bd.fb" target="_blank" onclick="toggleMenu()" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5 block">
+                    <a href="https://facebook.com/ahmed.bd.fb" target="_blank" onclick="toggleMenu()" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2 block">
                         <i class="fa-brands fa-facebook text-blue-500 text-xs w-4 text-center"></i>
                         <span id="mSupportText" class="font-medium">সাপোর্ট (Facebook)</span>
                     </a>
 
-                    <button onclick="showAppInfo(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
+                    <button onclick="showAppInfo(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
                         <i class="fa-solid fa-circle-info text-sky-400 text-xs w-4 text-center"></i>
                         <span id="mInfoText" class="font-medium">অ্যাপ তথ্য</span>
                     </button>
@@ -274,13 +273,13 @@
     </header>
 
     <!-- নোটিশ সেকশন -->
-    <div class="max-w-7xl mx-auto w-full px-3 lg:px-5 pt-3">
-        <div class="glass-card rounded-xl px-2.5 py-1 border border-slate-800/80 shadow-md">
+    <div class="max-w-7xl mx-auto w-full px-3 pt-2">
+        <div class="glass-card rounded-xl px-2 py-0.5 border border-slate-800/80 shadow-md">
             <div class="flex items-center gap-2">
-                <span class="pure-red-badge text-[10px] font-bold px-2 py-0.5 rounded shrink-0 flex items-center gap-1 uppercase tracking-wide">
-                    <i class="fa-solid fa-bullhorn text-[9px]"></i> নোটিশ
+                <span class="pure-red-badge text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 flex items-center gap-1 uppercase tracking-wide">
+                    <i class="fa-solid fa-bullhorn text-[8px]"></i> নোটিশ
                 </span>
-                <marquee id="noticeText" behavior="scroll" direction="left" class="text-[11px] text-slate-300 font-medium tracking-wide leading-tight">
+                <marquee id="noticeText" behavior="scroll" direction="left" class="text-[10px] text-slate-300 font-medium tracking-wide leading-tight">
                     স্বাগতম! কোনো চ্যানেল লোড না হলে প্লে-লিস্ট রিফ্রেশ করুন অথবা অন্য ক্যাটাগরি থেকে চ্যানেল প্লে করুন। নিরবচ্ছিন্ন লাইভ টিভি উপভোগ করুন।
                 </marquee>
             </div>
@@ -288,27 +287,27 @@
     </div>
 
     <!-- Layout Main Container -->
-    <main class="max-w-7xl mx-auto w-full p-3 lg:p-5 flex-1 app-main-grid">
+    <main class="max-w-7xl mx-auto w-full p-2 lg:p-4 flex-1 app-main-grid">
 
         <!-- Player Column -->
-        <div class="w-full flex flex-col gap-3">
-            <div class="player-3d-card relative w-full bg-black rounded-2xl overflow-hidden aspect-video flex items-center justify-center group shadow-2xl">
+        <div class="w-full flex flex-col gap-2">
+            <div class="player-3d-card relative w-full bg-black rounded-xl overflow-hidden aspect-video flex items-center justify-center group shadow-2xl">
                 <video id="mainVideo" class="w-full h-full object-fill" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
 
-                <div id="playerOverlay" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center p-6 text-center z-10 transition-all duration-300">
-                    <div class="w-14 h-14 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center text-xl mb-3 shadow-inner">
+                <div id="playerOverlay" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center p-4 text-center z-10 transition-all duration-300">
+                    <div class="w-10 h-10 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center text-lg mb-2 shadow-inner">
                         <i class="fa-solid fa-play"></i>
                     </div>
                     <h3 id="overlayTitle" class="text-xs font-semibold text-slate-200">চ্যানেল সিলেক্ট করুন</h3>
-                    <p id="overlayDesc" class="text-[11px] text-slate-400 max-w-xs mt-1">তালিকা থেকে যেকোনো চ্যানেল নির্বাচন করে প্লে করুন।</p>
+                    <p id="overlayDesc" class="text-[10px] text-slate-400 max-w-xs mt-1">তালিকা থেকে যেকোনো চ্যানেল নির্বাচন করে প্লে করুন।</p>
                 </div>
             </div>
         </div>
 
         <!-- Channel List Column -->
-        <div class="w-full glass-card rounded-2xl p-3 flex flex-col h-[480px] sidebar-height shadow-xl">
+        <div class="w-full glass-card rounded-xl p-2.5 flex flex-col h-[380px] sidebar-height shadow-xl">
             
-            <div class="space-y-2.5 pb-2.5 border-b border-slate-800/80 shrink-0">
+            <div class="space-y-2 pb-2 border-b border-slate-800/80 shrink-0">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                         <i class="fa-solid fa-list-ul text-blue-400"></i>
@@ -319,21 +318,21 @@
 
                 <div class="flex items-center gap-2">
                     <select id="categorySelect" onchange="filterChannels()" 
-                        class="w-1/3 bg-slate-950/80 text-[11px] text-slate-200 rounded-lg px-2 py-2 border border-slate-800 focus:outline-none focus:border-blue-500 transition cursor-pointer">
+                        class="w-1/3 bg-slate-950/80 text-[10px] text-slate-200 rounded-lg px-2 py-1.5 border border-slate-800 focus:outline-none focus:border-blue-500 transition cursor-pointer">
                         <option value="ALL">সকল ক্যাটাগরি</option>
                     </select>
 
                     <div class="relative flex-1">
                         <input type="text" id="searchInput" oninput="filterChannels()" placeholder="খুঁজুন..." 
-                            class="w-full bg-slate-950/80 text-[11px] text-slate-100 rounded-lg pl-7 pr-2.5 py-2 border border-slate-800 focus:outline-none focus:border-blue-500 transition">
-                        <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-[10px] text-slate-500"></i>
+                            class="w-full bg-slate-950/80 text-[10px] text-slate-100 rounded-lg pl-7 pr-2 py-1.5 border border-slate-800 focus:outline-none focus:border-blue-500 transition">
+                        <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2 text-[9px] text-slate-500"></i>
                     </div>
                 </div>
             </div>
 
             <!-- Scrollable Area -->
             <div id="channelContainer" class="flex-1 overflow-y-auto pt-2 space-y-1.5 pr-1 content-start">
-                <p id="loadingText" class="text-center text-xs text-slate-500 py-10">প্লে-লিস্ট লোড হচ্ছে...</p>
+                <p id="loadingText" class="text-center text-xs text-slate-500 py-6">প্লে-লিস্ট লোড হচ্ছে...</p>
             </div>
 
         </div>
@@ -454,7 +453,7 @@
 
         async function fetchPlaylist() {
             channelContainer.innerHTML = `
-                <div class="text-center py-10 text-slate-500 text-xs">
+                <div class="text-center py-6 text-slate-500 text-xs">
                     <i class="fa-solid fa-spinner fa-spin text-lg mb-2 text-blue-500"></i>
                     <p>${currentLang === 'bn' ? 'প্লে-লিস্ট লোড হচ্ছে...' : 'Loading Playlist...'}</p>
                 </div>
@@ -480,7 +479,7 @@
             } catch (err) {
                 console.error(err);
                 channelContainer.innerHTML = `
-                    <div class="text-center py-8 text-rose-400 text-xs">
+                    <div class="text-center py-6 text-rose-400 text-xs">
                         <i class="fa-solid fa-circle-exclamation text-xl mb-1.5"></i>
                         <p class="font-semibold">${currentLang === 'bn' ? 'প্লে-লিস্ট লোড হতে সমস্যা হয়েছে' : 'Failed to load playlist'}</p>
                         <p class="text-[10px] text-slate-500 mt-1">${err.message}</p>
@@ -561,7 +560,7 @@
 
             if (list.length === 0) {
                 const noChMsg = currentLang === 'bn' ? "কোনো চ্যানেল পাওয়া যায়নি" : "No channels found";
-                channelContainer.innerHTML = `<p class="text-center text-slate-500 text-xs py-8">${noChMsg}</p>`;
+                channelContainer.innerHTML = `<p class="text-center text-slate-500 text-xs py-6">${noChMsg}</p>`;
                 return;
             }
 
@@ -572,21 +571,21 @@
                 
                 return `
                 <div onclick="playChannel(decodeURIComponent('${encodedUrl}'))" 
-                    class="p-2 rounded-xl border border-slate-800/80 cursor-pointer hover:bg-slate-800/60 transition flex items-center justify-between gap-2 ${isActive ? 'active-channel' : ''}">
-                    <div class="flex items-center gap-2.5 overflow-hidden flex-1">
-                        <div class="w-8 h-8 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden">
-                            ${ch.logo ? `<img src="${ch.logo}" class="w-full h-full object-cover" onerror="this.style.display='none'">` : `<i class="fa-solid fa-tv text-[10px] text-slate-600"></i>`}
+                    class="p-1.5 rounded-lg border border-slate-800/80 cursor-pointer hover:bg-slate-800/60 transition flex items-center justify-between gap-2 ${isActive ? 'active-channel' : ''}">
+                    <div class="flex items-center gap-2 overflow-hidden flex-1">
+                        <div class="w-7 h-7 rounded-md bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden">
+                            ${ch.logo ? `<img src="${ch.logo}" class="w-full h-full object-cover" onerror="this.style.display='none'">` : `<i class="fa-solid fa-tv text-[9px] text-slate-600"></i>`}
                         </div>
                         <div class="overflow-hidden">
-                            <h4 class="text-xs font-semibold text-slate-200 truncate">${ch.name}</h4>
-                            <p class="text-[9px] text-slate-400 truncate">${ch.group}</p>
+                            <h4 class="text-[11px] font-semibold text-slate-200 truncate">${ch.name}</h4>
+                            <p class="text-[8px] text-slate-400 truncate">${ch.group}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-1 shrink-0">
-                        <button onclick="toggleFavorite(decodeURIComponent('${encodedUrl}'), event)" class="p-1.5 hover:scale-125 transition text-xs">
+                        <button onclick="toggleFavorite(decodeURIComponent('${encodedUrl}'), event)" class="p-1 hover:scale-125 transition text-xs">
                             <i class="${isFav ? 'fa-solid text-amber-400' : 'fa-regular text-slate-500'} fa-star"></i>
                         </button>
-                        ${isActive ? `<span class="live-active-badge text-[9px] px-2 py-0.5 rounded font-mono uppercase">LIVE</span>` : ''}
+                        ${isActive ? `<span class="live-active-badge text-[8px] px-1.5 py-0.5 rounded font-mono uppercase">LIVE</span>` : ''}
                     </div>
                 </div>
             `}).join('');
