@@ -143,7 +143,6 @@
 
         /* 3D Player Card */
         .player-3d-card {
-            transform: translateY(-4px);
             box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.8),
                         0 0 20px -5px rgba(59, 130, 246, 0.3);
             border: 1px solid rgba(59, 130, 246, 0.3);
@@ -151,7 +150,6 @@
         }
 
         .player-3d-card:hover {
-            transform: translateY(-6px);
             box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.9),
                         0 0 30px 2px rgba(59, 130, 246, 0.45);
         }
@@ -187,10 +185,10 @@
     <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-4 py-2.5">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
             
-            <!-- Logo & Title -->
+            <!-- Logo & Title with Modern Icon -->
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
-                    <i class="fa-solid fa-tv text-base"></i>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/30 border border-blue-400/30">
+                    <i class="fa-solid fa-circle-play text-xl animate-pulse"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
@@ -261,7 +259,7 @@
         </div>
     </header>
 
-    <!-- 🆕 হেডারের ঠিক নিচে নোটিশ সেকশন -->
+    <!-- হেডারের ঠিক নিচে নোটিশ সেকশন -->
     <div class="max-w-7xl mx-auto w-full px-3 lg:px-5 pt-3">
         <div class="glass-card rounded-xl px-2.5 py-1 border border-slate-800/80 shadow-md">
             <div class="flex items-center gap-2">
@@ -275,13 +273,12 @@
         </div>
     </div>
 
-    <!-- Main Content Grid -->
-    <main class="max-w-7xl mx-auto w-full p-3 lg:p-5 flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 items-start pt-3">
+    <!-- Optimized Laptop/Desktop Layout Grid -->
+    <main class="max-w-7xl mx-auto w-full p-3 lg:p-5 flex-1 grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
 
-        <!-- Left Column: Video Player Section -->
-        <div class="lg:col-span-2 flex flex-col gap-3">
-            
-            <div class="player-3d-card relative w-full bg-black rounded-2xl overflow-hidden aspect-video flex items-center justify-center group">
+        <!-- Left Column (Laptop/Desktop: Left Side Player) -->
+        <div class="lg:col-span-2 w-full flex flex-col gap-3">
+            <div class="player-3d-card relative w-full bg-black rounded-2xl overflow-hidden aspect-video flex items-center justify-center group shadow-2xl">
                 <video id="mainVideo" class="w-full h-full object-fill" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
 
                 <div id="playerOverlay" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center p-6 text-center z-10 transition-all duration-300">
@@ -292,16 +289,15 @@
                     <p id="overlayDesc" class="text-[11px] text-slate-400 max-w-xs mt-1">ডানপাশের তালিকা থেকে যেকোনো চ্যানেল নির্বাচন করে প্লে করুন।</p>
                 </div>
             </div>
-
         </div>
 
-        <!-- Right Column: Channel List Sidebar -->
-        <div class="glass-card rounded-2xl p-3 flex flex-col h-[520px] lg:h-[460px] shadow-xl">
+        <!-- Right Column (Laptop/Desktop: Right Side Channel List Container) -->
+        <div class="lg:col-span-1 w-full glass-card rounded-2xl p-3 flex flex-col h-[520px] lg:h-[calc(100vh-210px)] max-h-[580px] min-h-[460px] shadow-xl">
             
-            <div class="space-y-2.5 pb-2.5 border-b border-slate-800/80">
+            <div class="space-y-2.5 pb-2.5 border-b border-slate-800/80 shrink-0">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                        <i class="fa-solid fa-list text-blue-400"></i>
+                        <i class="fa-solid fa-list-ul text-blue-400"></i>
                         <span id="chListTitle">চ্যানেল লিস্ট</span>
                     </span>
                     <span id="channelCounter" class="text-[10px] bg-blue-600 text-white font-bold border border-blue-500 px-2 py-0.5 rounded-full font-mono shadow-sm">0</span>
@@ -321,7 +317,7 @@
                 </div>
             </div>
 
-            <!-- Align Content Start Fixes Empty Stretch -->
+            <!-- Scrollable List Area -->
             <div id="channelContainer" class="flex-1 overflow-y-auto pt-2 space-y-1.5 pr-1 content-start">
                 <p id="loadingText" class="text-center text-xs text-slate-500 py-10">প্লে-লিস্ট লোড হচ্ছে...</p>
             </div>
