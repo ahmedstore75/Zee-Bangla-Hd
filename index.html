@@ -14,11 +14,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        html, body {
-            height: 100%;
-            overflow: hidden; /* পুরো পেজের অতিরিক্ত স্ক্রোল বন্ধ করার জন্য */
-        }
-
         body {
             font-family: 'Hind Siliguri', sans-serif;
             background-color: #060911;
@@ -110,19 +105,30 @@
             color: #ffffff !important;
         }
 
-        /* Flex Layout Alignment */
+        /* Responsive Layout Rules */
         .app-main-grid {
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
         }
 
-        /* Desktop & Landscape Layout */
-        @media screen and (min-width: 900px) or (min-aspect-ratio: 13/9) {
+        /* Screen Rotate (Landscape Mode) & Desktop Layout Adjustment */
+        @media screen and (orientation: landscape) and (max-height: 600px) {
+            .app-main-grid {
+                display: grid !important;
+                grid-template-columns: 1.2fr 1fr !important;
+                gap: 0.75rem !important;
+            }
+            .channel-card-box {
+                max-height: calc(100vh - 120px) !important;
+            }
+        }
+
+        @media (min-width: 900px) {
             .app-main-grid {
                 display: grid !important;
                 grid-template-columns: 1.8fr 1.2fr !important;
-                align-items: stretch;
+                gap: 1rem !important;
             }
         }
 
@@ -193,10 +199,10 @@
         }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col justify-between overflow-hidden">
+<body class="min-h-screen flex flex-col justify-between">
 
     <!-- Header / Navbar -->
-    <header class="glass-card border-b border-slate-800/80 px-3 py-2 shrink-0 z-50">
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-3 py-2">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
             
             <!-- Logo & Title -->
@@ -274,7 +280,7 @@
     </header>
 
     <!-- নোটিশ সেকশন -->
-    <div class="max-w-7xl mx-auto w-full px-3 pt-2 shrink-0">
+    <div class="max-w-7xl mx-auto w-full px-3 pt-2">
         <div class="glass-card rounded-xl px-2 py-0.5 border border-slate-800/80 shadow-md">
             <div class="flex items-center gap-2">
                 <span class="pure-red-badge text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 flex items-center gap-1 uppercase tracking-wide">
@@ -288,10 +294,10 @@
     </div>
 
     <!-- Layout Main Container -->
-    <main class="max-w-7xl mx-auto w-full p-2.5 lg:p-4 flex-1 flex flex-col min-h-0 overflow-hidden app-main-grid">
+    <main class="max-w-7xl mx-auto w-full p-2.5 lg:p-4 flex-1 app-main-grid">
 
         <!-- Player Column -->
-        <div class="w-full flex flex-col gap-2 shrink-0">
+        <div class="w-full flex flex-col gap-2">
             <div class="player-3d-card relative w-full bg-black rounded-xl overflow-hidden aspect-video flex items-center justify-center group shadow-2xl">
                 <video id="mainVideo" class="w-full h-full object-fill" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
 
@@ -306,7 +312,7 @@
         </div>
 
         <!-- Channel List Column -->
-        <div class="w-full glass-card rounded-xl p-2.5 flex flex-col min-h-0 flex-1 shadow-xl overflow-hidden">
+        <div class="w-full glass-card rounded-xl p-2.5 flex flex-col channel-card-box shadow-xl min-h-[400px]">
             
             <div class="space-y-2 pb-2 border-b border-slate-800/80 shrink-0">
                 <div class="flex items-center justify-between">
@@ -331,8 +337,8 @@
                 </div>
             </div>
 
-            <!-- Scrollable Area (Only Channels Scroll Here) -->
-            <div id="channelContainer" class="flex-1 overflow-y-auto min-h-0 pt-2 space-y-1.5 pr-1 content-start">
+            <!-- Scrollable Area -->
+            <div id="channelContainer" class="flex-1 overflow-y-auto pt-2 space-y-1.5 pr-1 content-start max-h-[500px]">
                 <p id="loadingText" class="text-center text-xs text-slate-500 py-6">প্লে-লিস্ট লোড হচ্ছে...</p>
             </div>
 
