@@ -1,110 +1,521 @@
-
 <!DOCTYPE html>
-
-<html lang="en">
-
-  <link type="text/css" rel="stylesheet" id="dark-mode-custom-link" />
-
-  <link type="text/css" rel="stylesheet" id="dark-mode-general-link" />
-
-  <style type="text/css" id="dark-mode-custom-style" lang="en"></style>
-
-  <style type="text/css" id="dark-mode-native-style" lang="en"></style>
-
-  <style type="text/css" id="dark-mode-native-sheet" lang="en"></style>
-
-  <head>
-
-    <meta charset="UTF-8" />
-
-    <title>You Are Watching</title>
-
-    <link rel="icon" href="" type="image/x-icon" />
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-    <meta name="description" content="" />
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-
-    <meta http-equiv="Pragma" content="no-cache" />
-
-    <meta http-equiv="Expires" content="0" />
-
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" />
-
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPTV Live - Pro Max</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- HLS.js for Live Streaming -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <script src="https://content.jwplatform.com/libraries/SAHhwvZq.js"></script>
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #080b12;
+            color: #f1f5f9;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-  </head>
+        /* Light Theme Overrides */
+        body.light-theme {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        body.light-theme .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+        body.light-theme header, 
+        body.light-theme #headerMenu {
+            background-color: #ffffff;
+            border-color: #e2e8f0;
+        }
+        body.light-theme .text-white, 
+        body.light-theme .text-slate-100, 
+        body.light-theme .text-slate-200, 
+        body.light-theme .text-slate-300 {
+            color: #0f172a !important;
+        }
+        body.light-theme .text-slate-400, 
+        body.light-theme .text-slate-500 {
+            color: #64748b !important;
+        }
+        body.light-theme input, 
+        body.light-theme select {
+            background-color: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+            color: #0f172a !important;
+        }
+        body.light-theme button {
+            background-color: #e2e8f0;
+            color: #0f172a;
+            border-color: #cbd5e1;
+        }
+        body.light-theme button:hover {
+            background-color: #cbd5e1;
+        }
+        body.light-theme #channelContainer > div {
+            border-color: #e2e8f0;
+        }
+        body.light-theme #channelContainer > div:hover {
+            background-color: #f1f5f9;
+        }
+        body.light-theme .active-channel {
+            border-color: #3b82f6 !important;
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(241, 245, 249, 0.8) 100%) !important;
+        }
 
-  <body data-new-gr-c-s-check-loaded="8.904.0" data-gr-ext-installed="">
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
-    <header class="header"></header>
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .active-channel {
+            border-color: #3b82f6 !important;
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.25) 0%, rgba(15, 23, 42, 0.6) 100%) !important;
+        }
+        .pro-badge {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+        }
+        .grid-view {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 0.5rem !important;
+        }
+        .grid-view > div {
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            padding: 0.75rem 0.5rem !important;
+        }
+        .grid-view > div .flex {
+            flex-direction: column !important;
+            align-items: center !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
 
-    <div class="site-content">
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            
+            <!-- Logo & Title -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                    <i class="fa-solid fa-tv text-lg"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 id="appTitle" class="text-base font-bold tracking-wide text-white">আইপি টিভি লাইভ</h1>
+                        <span class="pro-badge text-[10px] font-black text-white px-1.5 py-0.5 rounded tracking-wider uppercase">PRO MAX</span>
+                    </div>
+                    <p id="statusText" class="text-[11px] text-slate-400">অনলাইন স্ট্রিমিং প্লেয়ার</p>
+                </div>
+            </div>
 
-      <div class="containerbox">
+            <!-- Header Menu Dropdown Button -->
+            <div class="relative">
+                <button onclick="toggleMenu()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700 transition flex items-center gap-2">
+                    <i class="fa-solid fa-bars text-blue-400"></i>
+                    <span id="menuBtnText" class="hidden sm:inline">মেনু</span>
+                </button>
 
-        <center>
+                <!-- Dropdown Menu Box -->
+                <div id="headerMenu" class="hidden absolute right-0 mt-2 w-56 rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl z-50 p-2 space-y-1">
+                    
+                    <!-- Refresh Playlist -->
+                    <button onclick="fetchPlaylist(); toggleMenu();" class="w-full text-left px-3 py-2 text-xs text-slate-300 hover:bg-slate-800 rounded-xl transition flex items-center gap-2.5">
+                        <i class="fa-solid fa-rotate-right text-blue-400 w-4"></i>
+                        <span id="mRefreshText">প্লে-লিস্ট রিফ্রেশ</span>
+                    </button>
 
-          <!-- Video Player -->
+                    <!-- Toggle View Mode (List vs Grid) -->
+                    <button onclick="toggleLayout(); toggleMenu();" class="w-full text-left px-3 py-2 text-xs text-slate-300 hover:bg-slate-800 rounded-xl transition flex items-center gap-2.5">
+                        <i id="layoutIcon" class="fa-solid fa-border-all text-amber-400 w-4"></i>
+                        <span id="layoutText">গ্রিড ভিউ চালু করুন</span>
+                    </button>
 
-          <div id="player-container"></div>
+                    <!-- Theme Toggle -->
+                    <button onclick="toggleTheme(); toggleMenu();" class="w-full text-left px-3 py-2 text-xs text-slate-300 hover:bg-slate-800 rounded-xl transition flex items-center gap-2.5">
+                        <i id="themeIcon" class="fa-solid fa-sun text-yellow-400 w-4"></i>
+                        <span id="themeText">লাইট থিম করুন</span>
+                    </button>
 
-          <script>
+                    <!-- Language Switcher -->
+                    <button onclick="toggleLanguage(); toggleMenu();" class="w-full text-left px-3 py-2 text-xs text-slate-300 hover:bg-slate-800 rounded-xl transition flex items-center gap-2.5">
+                        <i class="fa-solid fa-language text-emerald-400 w-4"></i>
+                        <span id="langText">English Language</span>
+                    </button>
 
-            // Initialize JW Player
+                    <hr class="border-slate-800/80 my-1">
 
-            var player = jwplayer("player-container");
+                    <!-- Facebook Support Link -->
+                    <a href="https://facebook.com/ahmed.bd.fb" target="_blank" onclick="toggleMenu()" class="w-full text-left px-3 py-2 text-xs text-slate-300 hover:bg-slate-800 rounded-xl transition flex items-center gap-2.5 block">
+                        <i class="fa-brands fa-facebook text-blue-500 w-4"></i>
+                        <span id="mSupportText">সাপোর্ট (Facebook)</span>
+                    </a>
 
+                    <!-- App Info / About -->
+                    <button onclick="showAppInfo(); toggleMenu();" class="w-full text-left px-3 py-2 text-xs text-slate-300 hover:bg-slate-800 rounded-xl transition flex items-center gap-2.5">
+                        <i class="fa-solid fa-circle-info text-sky-400 w-4"></i>
+                        <span id="mInfoText">অ্যাপ তথ্য</span>
+                    </button>
 
+                </div>
+            </div>
 
-            // Setup JW Player configuration
+        </div>
+    </header>
 
-            player.setup({
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto w-full p-4 lg:p-6 flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-              file: "https://your-abbu.pages.dev/abbu.mp4",
+        <!-- Left Column: Video Player Box -->
+        <div class="lg:col-span-2 flex flex-col gap-3">
+            
+            <div class="relative w-full bg-black rounded-2xl overflow-hidden shadow-2xl border border-slate-800 aspect-video flex items-center justify-center group">
+                
+                <video id="mainVideo" class="w-full h-full object-contain" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer"></video>
 
-              width: "100%",
+                <!-- Initial/Error Overlay -->
+                <div id="playerOverlay" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center p-6 text-center z-10 transition-all duration-300">
+                    <div class="w-16 h-16 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center text-2xl mb-3 shadow-inner">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                    <h3 id="overlayTitle" class="text-sm font-semibold text-slate-200">চ্যানেল সিলেক্ট করুন</h3>
+                    <p id="overlayDesc" class="text-xs text-slate-400 max-w-xs mt-1">ডানপাশের তালিকা থেকে যেকোনো চ্যানেল নির্বাচন করে প্লে করুন।</p>
+                </div>
 
-              stretching: "",
+            </div>
 
-              type: "mp4",
+        </div>
 
-              autostart: "true",
+        <!-- Right Column: Channel List Sidebar -->
+        <div class="glass-card rounded-2xl p-4 flex flex-col h-[550px] lg:h-auto">
+            
+            <!-- Search & Dynamic Category Filters -->
+            <div class="space-y-3 pb-3 border-b border-slate-800/80">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-list text-blue-400"></i>
+                        <span id="chListTitle">চ্যানেল লিস্ট</span>
+                    </span>
+                    <span id="channelCounter" class="text-[11px] bg-slate-800 text-slate-300 border border-slate-700 px-2.5 py-0.5 rounded-full font-mono">0</span>
+                </div>
 
-              mute: "false",
+                <!-- Category Dropdown + Search Box Line -->
+                <div class="flex items-center gap-2">
+                    <!-- Dynamic Category Dropdown -->
+                    <select id="categorySelect" onchange="filterChannels()" 
+                        class="w-1/3 bg-slate-950/80 text-xs text-slate-200 rounded-xl px-2.5 py-2.5 border border-slate-800 focus:outline-none focus:border-blue-500 transition cursor-pointer">
+                        <option value="ALL">সকল ক্যাটাগরি</option>
+                    </select>
 
-              primary: "html5",
+                    <!-- Search Input Box -->
+                    <div class="relative flex-1">
+                        <input type="text" id="searchInput" oninput="filterChannels()" placeholder="খুঁজুন..." 
+                            class="w-full bg-slate-950/80 text-xs text-slate-100 rounded-xl pl-8 pr-3 py-2.5 border border-slate-800 focus:outline-none focus:border-blue-500 transition">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-xs text-slate-500"></i>
+                    </div>
+                </div>
+            </div>
 
-              logo: {
+            <!-- Channel Items List Container -->
+            <div id="channelContainer" class="flex-1 overflow-y-auto pt-3 space-y-2 pr-1">
+                <p id="loadingText" class="text-center text-xs text-slate-500 py-10">প্লে-লিস্ট লোড হচ্ছে...</p>
+            </div>
 
-                file: "",
+        </div>
 
-                hide: "false",
+    </main>
 
-                position: "top-left",
+    <script>
+        const currentPlaylistUrl = "https://raw.githubusercontent.com/sm-monirulislam/SM-Live-TV/refs/heads/main/Combined_Live_TV.m3u";
 
-              }
+        let allChannels = [];
+        let hlsInstance = null;
+        let activeId = -1;
+        let isGridView = false;
+        let isLightTheme = false;
+        let currentLang = 'bn'; // 'bn' or 'en'
 
+        const video = document.getElementById('mainVideo');
+        const overlay = document.getElementById('playerOverlay');
+        const overlayTitle = document.getElementById('overlayTitle');
+        const overlayDesc = document.getElementById('overlayDesc');
+        const channelContainer = document.getElementById('channelContainer');
+        const channelCounter = document.getElementById('channelCounter');
+        const categorySelect = document.getElementById('categorySelect');
+        const headerMenu = document.getElementById('headerMenu');
+
+        window.addEventListener('DOMContentLoaded', fetchPlaylist);
+
+        // Header Menu Toggle
+        function toggleMenu() {
+            headerMenu.classList.toggle('hidden');
+        }
+
+        // Close Menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.relative')) {
+                headerMenu.classList.add('hidden');
+            }
+        });
+
+        // Toggle Theme (Dark / Light Mode)
+        function toggleTheme() {
+            isLightTheme = !isLightTheme;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+
+            if (isLightTheme) {
+                document.body.classList.add('light-theme');
+                themeIcon.className = "fa-solid fa-moon text-indigo-400 w-4";
+                themeText.textContent = currentLang === 'bn' ? "ডার্ক থিম করুন" : "Dark Theme";
+            } else {
+                document.body.classList.remove('light-theme');
+                themeIcon.className = "fa-solid fa-sun text-yellow-400 w-4";
+                themeText.textContent = currentLang === 'bn' ? "লাইট থিম করুন" : "Light Theme";
+            }
+        }
+
+        // Toggle Language (Bangla / English)
+        function toggleLanguage() {
+            currentLang = currentLang === 'bn' ? 'en' : 'bn';
+
+            if (currentLang === 'en') {
+                document.getElementById('appTitle').textContent = "IPTV Live";
+                document.getElementById('statusText').textContent = "Online Streaming Player";
+                document.getElementById('menuBtnText').textContent = "Menu";
+                document.getElementById('mRefreshText').textContent = "Refresh Playlist";
+                document.getElementById('mSupportText').textContent = "Support (Facebook)";
+                document.getElementById('mInfoText').textContent = "App Info";
+                document.getElementById('chListTitle').textContent = "Channel List";
+                document.getElementById('searchInput').placeholder = "Search...";
+                document.getElementById('langText').textContent = "বাংলা ভাষা";
+                document.getElementById('themeText').textContent = isLightTheme ? "Dark Theme" : "Light Theme";
+                document.getElementById('layoutText').textContent = isGridView ? "List View" : "Grid View";
+            } else {
+                document.getElementById('appTitle').textContent = "আইপি টিভি লাইভ";
+                document.getElementById('statusText').textContent = "অনলাইন স্ট্রিমিং প্লেয়ার";
+                document.getElementById('menuBtnText').textContent = "মেনু";
+                document.getElementById('mRefreshText').textContent = "প্লে-লিস্ট রিফ্রেশ";
+                document.getElementById('mSupportText').textContent = "সাপোর্ট (Facebook)";
+                document.getElementById('mInfoText').textContent = "অ্যাপ তথ্য";
+                document.getElementById('chListTitle').textContent = "চ্যানেল লিস্ট";
+                document.getElementById('searchInput').placeholder = "খুঁজুন...";
+                document.getElementById('langText').textContent = "English Language";
+                document.getElementById('themeText').textContent = isLightTheme ? "ডার্ক থিম করুন" : "লাইট থিম করুন";
+                document.getElementById('layoutText').textContent = isGridView ? "লিস্ট ভিউ চালু করুন" : "গ্রিড ভিউ চালু করুন";
+            }
+
+            populateCategories(allChannels);
+        }
+
+        // Toggle Channel View Mode (List vs Grid)
+        function toggleLayout() {
+            isGridView = !isGridView;
+            const layoutIcon = document.getElementById('layoutIcon');
+            const layoutText = document.getElementById('layoutText');
+
+            if (isGridView) {
+                channelContainer.classList.add('grid-view');
+                layoutIcon.className = "fa-solid fa-list text-amber-400 w-4";
+                layoutText.textContent = currentLang === 'bn' ? "লিস্ট ভিউ চালু করুন" : "List View";
+            } else {
+                channelContainer.classList.remove('grid-view');
+                layoutIcon.className = "fa-solid fa-border-all text-amber-400 w-4";
+                layoutText.textContent = currentLang === 'bn' ? "গ্রিড ভিউ চালু করুন" : "Grid View";
+            }
+        }
+
+        // Show App Info Alert
+        function showAppInfo() {
+            if (currentLang === 'bn') {
+                alert("আইপি টিভি লাইভ - Pro Max\nভার্সন: ৩.২\nহাই-স্পিড HLS স্ট্রিমিং সাপোর্টেড প্লেয়ার।");
+            } else {
+                alert("IPTV Live - Pro Max\nVersion: 3.2\nHigh-speed HLS streaming supported player.");
+            }
+        }
+
+        async function fetchPlaylist() {
+            channelContainer.innerHTML = `
+                <div class="text-center py-12 text-slate-500 text-xs">
+                    <i class="fa-solid fa-spinner fa-spin text-xl mb-2 text-blue-500"></i>
+                    <p>${currentLang === 'bn' ? 'প্লে-লিস্ট লোড হচ্ছে...' : 'Loading Playlist...'}</p>
+                </div>
+            `;
+
+            try {
+                const res = await fetch(currentPlaylistUrl, { cache: "no-store" });
+                if (!res.ok) throw new Error("HTTP error " + res.status);
+                const text = await res.text();
+
+                allChannels = parseM3U(text);
+
+                if (allChannels.length > 0) {
+                    populateCategories(allChannels);
+                    renderChannels(allChannels);
+                    playChannel(0);
+                } else {
+                    showError(
+                        currentLang === 'bn' ? "প্লে-লিস্ট খালি" : "Playlist Empty", 
+                        currentLang === 'bn' ? "কোনো চ্যানেল পাওয়া যায়নি।" : "No channels found."
+                    );
+                }
+            } catch (err) {
+                console.error(err);
+                channelContainer.innerHTML = `
+                    <div class="text-center py-8 text-rose-400 text-xs">
+                        <i class="fa-solid fa-circle-exclamation text-2xl mb-2"></i>
+                        <p class="font-semibold">${currentLang === 'bn' ? 'প্লে-লিস্ট লোড হতে সমস্যা হয়েছে' : 'Failed to load playlist'}</p>
+                        <p class="text-[10px] text-slate-500 mt-1">${err.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // M3U Parser
+        function parseM3U(content) {
+            const lines = content.split('\n');
+            const channels = [];
+            let item = {};
+
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i].trim();
+                if (line.startsWith('#EXTINF:')) {
+                    item = {};
+                    const logoMatch = line.match(/tvg-logo="([^"]*)"/);
+                    item.logo = logoMatch ? logoMatch[1] : '';
+
+                    const groupMatch = line.match(/group-title="([^"]*)"/);
+                    item.group = groupMatch ? groupMatch[1] : 'Uncategorized';
+
+                    const commaIdx = line.lastIndexOf(',');
+                    item.name = commaIdx !== -1 ? line.substring(commaIdx + 1).trim() : 'Live Channel';
+                } else if (line.length > 0 && !line.startsWith('#')) {
+                    item.url = line;
+                    item.id = channels.length;
+                    channels.push(item);
+                    item = {};
+                }
+            }
+            return channels;
+        }
+
+        // Populate Dynamic Categories Dropdown
+        function populateCategories(channels) {
+            const groups = [...new Set(channels.map(c => c.group).filter(Boolean))];
+            
+            const allText = currentLang === 'bn' ? "সকল ক্যাটাগরি" : "All Categories";
+            categorySelect.innerHTML = `<option value="ALL">${allText}</option>`;
+            groups.forEach(group => {
+                const option = document.createElement('option');
+                option.value = group;
+                option.textContent = group;
+                categorySelect.appendChild(option);
+            });
+        }
+
+        // Render Channel List
+        function renderChannels(list) {
+            channelCounter.textContent = list.length;
+
+            if (list.length === 0) {
+                const noChMsg = currentLang === 'bn' ? "কোনো চ্যানেল পাওয়া যায়নি" : "No channels found";
+                channelContainer.innerHTML = `<p class="text-center text-slate-500 text-xs py-8">${noChMsg}</p>`;
+                return;
+            }
+
+            channelContainer.innerHTML = list.map(ch => `
+                <div onclick="playChannel(${ch.id})" id="ch-${ch.id}" 
+                    class="p-2.5 rounded-xl border border-slate-800/80 cursor-pointer hover:bg-slate-800/60 transition flex items-center justify-between gap-3 ${activeId === ch.id ? 'active-channel' : ''}">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <div class="w-9 h-9 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden">
+                            ${ch.logo ? `<img src="${ch.logo}" class="w-full h-full object-cover" onerror="this.style.display='none'">` : `<i class="fa-solid fa-tv text-xs text-slate-600"></i>`}
+                        </div>
+                        <div class="overflow-hidden">
+                            <h4 class="text-xs font-semibold text-slate-200 truncate">${ch.name}</h4>
+                            <p class="text-[10px] text-slate-400 truncate">${ch.group}</p>
+                        </div>
+                    </div>
+                    <span class="text-[10px] bg-blue-600/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded font-mono uppercase">LIVE</span>
+                </div>
+            `).join('');
+        }
+
+        // Channel Search and Category Filter combined
+        function filterChannels() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const selectedCategory = categorySelect.value;
+
+            const filtered = allChannels.filter(c => {
+                const matchesSearch = c.name.toLowerCase().includes(query) || c.group.toLowerCase().includes(query);
+                const matchesCategory = selectedCategory === 'ALL' || c.group === selectedCategory;
+                return matchesSearch && matchesCategory;
             });
 
-          </script>
+            renderChannels(filtered);
+        }
 
-        </center>
+        // Play Selected Stream
+        function playChannel(id) {
+            const ch = allChannels.find(c => c.id === id);
+            if (!ch || !ch.url) return;
 
-      </div>
+            activeId = id;
 
-    </div>
+            // Highlight Active Channel UI
+            document.querySelectorAll('#channelContainer > div').forEach(el => el.classList.remove('active-channel'));
+            const activeEl = document.getElementById(`ch-${id}`);
+            if (activeEl) activeEl.classList.add('active-channel');
 
-  </body>
+            // Hide Overlay
+            overlay.classList.add('opacity-0', 'pointer-events-none');
 
-<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
+            // HLS Stream Reset
+            if (hlsInstance) {
+                hlsInstance.destroy();
+            }
 
+            if (Hls.isSupported()) {
+                hlsInstance = new Hls({ enableWorker: true, lowLatencyMode: true });
+                hlsInstance.loadSource(ch.url);
+                hlsInstance.attachMedia(video);
+                hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+                    video.play().catch(e => console.log("Autoplay blocked:", e));
+                });
+                hlsInstance.on(Hls.Events.ERROR, (event, data) => {
+                    if (data.fatal) {
+                        showError(
+                            currentLang === 'bn' ? "স্ট্রিম প্লে হতে সমস্যা হচ্ছে" : "Streaming Error", 
+                            currentLang === 'bn' ? "চ্যানেল লিংকটি অফলাইন অথবা CORS সিকিউরিটি দ্বারা ব্লক করা।" : "Stream link offline or blocked by CORS policy."
+                        );
+                    }
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = ch.url;
+                video.play();
+            }
+        }
+
+        function showError(title, desc) {
+            overlayTitle.textContent = title;
+            overlayDesc.textContent = desc;
+            overlay.classList.remove('opacity-0', 'pointer-events-none');
+        }
+    </script>
+</body>
 </html>
