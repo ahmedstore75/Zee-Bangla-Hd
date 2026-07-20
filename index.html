@@ -580,8 +580,10 @@
                 <div onclick="playChannel(decodeURIComponent('${encodedUrl}'))" 
                     class="p-1.5 rounded-lg border border-slate-800/80 cursor-pointer hover:bg-slate-800/60 transition flex items-center justify-between gap-2 ${isActive ? 'active-channel' : ''}">
                     <div class="flex items-center gap-2.5 overflow-hidden flex-1">
-                        <div class="w-9 h-9 rounded-md bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden p-0.5">
-                            ${ch.logo ? `<img src="${ch.logo}" class="w-full h-full object-contain" onerror="this.style.display='none'">` : `<i class="fa-solid fa-tv text-xs text-slate-600"></i>`}
+                        <!-- Fallback Logo Box -->
+                        <div class="w-9 h-9 rounded-md bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden p-0.5 relative">
+                            <i class="fa-solid fa-tv text-xs text-blue-400 opacity-80"></i>
+                            ${ch.logo ? `<img src="${ch.logo}" class="absolute inset-0 w-full h-full object-contain bg-slate-950" onerror="this.style.display='none'">` : ''}
                         </div>
                         <div class="overflow-hidden">
                             <h4 class="text-[11px] font-semibold text-slate-200 truncate">${ch.name}</h4>
@@ -609,7 +611,6 @@
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const selectedCategory = categorySelect.value;
 
-            // If user typed anything in search, search across ALL channels and reset category dropdown to ALL
             if (query.length > 0) {
                 categorySelect.value = "ALL";
                 const filtered = allChannels.filter(c => {
@@ -619,7 +620,6 @@
                 });
                 renderChannels(filtered);
             } else {
-                // If search input is empty, filter normally based on category selection
                 const filtered = (selectedCategory === 'ALL') 
                     ? allChannels 
                     : allChannels.filter(c => c.group === selectedCategory);
