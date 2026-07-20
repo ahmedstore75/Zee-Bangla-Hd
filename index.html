@@ -70,6 +70,18 @@
             background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(241, 245, 249, 0.8) 100%) !important;
         }
 
+        /* Light theme fix for channel counter badge */
+        body.light-theme #channelCounter {
+            background-color: #3b82f6 !important;
+            color: #ffffff !important;
+            border-color: #2563eb !important;
+        }
+        
+        body.light-theme .info-card {
+            background-color: #ffffff !important;
+            border-color: #e2e8f0 !important;
+        }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
@@ -106,18 +118,18 @@
 
         /* Elevated 3D Video Frame Effect */
         .player-3d-card {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8),
-                        0 0 25px -5px rgba(59, 130, 246, 0.35);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.8),
+                        0 0 20px -5px rgba(59, 130, 246, 0.3);
             border: 1px solid rgba(59, 130, 246, 0.3);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .player-3d-card:hover {
-            transform: translateY(-10px) scale(1.005);
-            box-shadow: 0 30px 50px -12px rgba(0, 0, 0, 0.9),
-                        0 0 35px 2px rgba(59, 130, 246, 0.5);
-            border-color: rgba(59, 130, 246, 0.6);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.9),
+                        0 0 30px 2px rgba(59, 130, 246, 0.45);
+            border-color: rgba(59, 130, 246, 0.5);
         }
 
         /* NO CROP + FULL FIT (Stretch) */
@@ -215,11 +227,12 @@
     </header>
 
     <!-- Main Content Grid -->
-    <main class="max-w-7xl mx-auto w-full p-4 lg:p-6 flex-1 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start pt-6">
+    <main class="max-w-7xl mx-auto w-full p-4 lg:p-6 flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 items-start pt-4">
 
-        <!-- Left Column: Video Player Box (Elevated 3D Effect) -->
-        <div class="lg:col-span-2 flex flex-col gap-3">
+        <!-- Left Column: Video Player & Notice Section -->
+        <div class="lg:col-span-2 flex flex-col gap-4">
             
+            <!-- Video Player Box -->
             <div class="player-3d-card relative w-full bg-black rounded-3xl overflow-hidden aspect-video flex items-center justify-center group">
                 
                 <video id="mainVideo" class="w-full h-full object-fill" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
@@ -235,10 +248,38 @@
 
             </div>
 
+            <!-- 🆕 ভিডিও প্লেয়ারের নিচের নোটিশ ও বর্তমানে চলমান চ্যানেলের শিরোনাম সেকশন -->
+            <div class="info-card glass-card rounded-2xl p-3 border border-slate-800 flex flex-col gap-2.5 shadow-lg">
+                
+                <!-- চলমান চ্যানেলের নাম ও শিরোনাম -->
+                <div class="flex items-center justify-between border-b border-slate-800/60 pb-2 px-1">
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                        <span id="playingTitle" class="text-xs font-bold text-slate-200 truncate">
+                            বর্তমানে প্লে হচ্ছে: <span class="text-blue-400">কোনো চ্যানেল সিলেক্ট করা হয়নি</span>
+                        </span>
+                    </div>
+                    <span id="playingCategory" class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700 shrink-0 font-medium">
+                        লাইভ টিভি
+                    </span>
+                </div>
+
+                <!-- স্ক্রলিং নোটিশ বার (Marquee) -->
+                <div class="flex items-center gap-2 bg-slate-950/60 rounded-xl px-3 py-1.5 border border-slate-800/80">
+                    <span class="bg-red-600/20 text-red-400 text-[10px] font-bold px-2 py-0.5 rounded border border-red-500/30 shrink-0 flex items-center gap-1">
+                        <i class="fa-solid fa-bullhorn text-[9px]"></i> নোটিশ
+                    </span>
+                    <marquee id="noticeText" behavior="scroll" direction="left" class="text-xs text-slate-300 tracking-wide">
+                        স্বাগতম! কোনো চ্যানেল লোড না হলে প্লে-লিস্ট রিফ্রেশ করুন অথবা অন্য ক্যাটাগরি থেকে চ্যানেল প্লে করুন। নিরবচ্ছিন্ন লাইভ টিভি উপভোগ করুন।
+                    </marquee>
+                </div>
+
+            </div>
+
         </div>
 
         <!-- Right Column: Channel List Sidebar -->
-        <div class="glass-card rounded-3xl p-4 flex flex-col h-[550px] lg:h-[480px] shadow-xl">
+        <div class="glass-card rounded-3xl p-4 flex flex-col h-[550px] lg:h-[530px] shadow-xl">
             
             <!-- Search & Dynamic Category Filters -->
             <div class="space-y-3 pb-3 border-b border-slate-800/80">
@@ -247,7 +288,8 @@
                         <i class="fa-solid fa-list text-blue-400"></i>
                         <span id="chListTitle">চ্যানেল লিস্ট</span>
                     </span>
-                    <span id="channelCounter" class="text-[11px] bg-slate-800 text-slate-300 border border-slate-700 px-2.5 py-0.5 rounded-full font-mono">0</span>
+                    <!-- 🟢 চ্যানেল কাউন্টারের ব্যাকগ্রাউন্ড ও টেক্সট কালার দৃশ্যমান করা হয়েছে -->
+                    <span id="channelCounter" class="text-[11px] bg-blue-600 text-white font-bold border border-blue-500 px-2.5 py-0.5 rounded-full font-mono shadow-sm">0</span>
                 </div>
 
                 <!-- Category Dropdown + Search Box Line -->
@@ -294,6 +336,8 @@
         const channelCounter = document.getElementById('channelCounter');
         const categorySelect = document.getElementById('categorySelect');
         const headerMenu = document.getElementById('headerMenu');
+        const playingTitle = document.getElementById('playingTitle');
+        const playingCategory = document.getElementById('playingCategory');
 
         window.addEventListener('DOMContentLoaded', fetchPlaylist);
 
@@ -342,6 +386,7 @@
                 document.getElementById('langText').textContent = "বাংলা ভাষা";
                 document.getElementById('themeText').textContent = isLightTheme ? "Dark Theme" : "Light Theme";
                 document.getElementById('layoutText').textContent = isGridView ? "List View" : "Grid View";
+                document.getElementById('noticeText').textContent = "Welcome! If a channel does not load, please refresh the playlist or select another channel. Enjoy smooth live streaming.";
             } else {
                 document.getElementById('appTitle').textContent = "আইপি টিভি লাইভ";
                 document.getElementById('statusText').textContent = "অনলাইন স্ট্রিমিং প্লেয়ার";
@@ -354,6 +399,7 @@
                 document.getElementById('langText').textContent = "English Language";
                 document.getElementById('themeText').textContent = isLightTheme ? "ডার্ক থিম করুন" : "লাইট থিম করুন";
                 document.getElementById('layoutText').textContent = isGridView ? "লিস্ট ভিউ চালু করুন" : "গ্রিড ভিউ চালু করুন";
+                document.getElementById('noticeText').textContent = "স্বাগতম! কোনো চ্যানেল লোড না হলে প্লে-লিস্ট রিফ্রেশ করুন অথবা অন্য ক্যাটাগরি থেকে চ্যানেল প্লে করুন। নিরবচ্ছিন্ন লাইভ টিভি উপভোগ করুন।";
             }
 
             populateCategories(allChannels);
@@ -379,9 +425,9 @@
         // Show App Info Alert
         function showAppInfo() {
             if (currentLang === 'bn') {
-                alert("আইপি টিভি লাইভ - Pro Max\nভার্সন: ৩.২\nহাই-স্পিড HLS স্ট্রিমিং সাপোর্টেড প্লেয়ার।");
+                alert("আইপি টিভি লাইভ - Pro Max\nভার্সন: ৩.৩\nহাই-স্পিড HLS স্ট্রিমিং সাপোর্টেড প্লেয়ার।");
             } else {
-                alert("IPTV Live - Pro Max\nVersion: 3.2\nHigh-speed HLS streaming supported player.");
+                alert("IPTV Live - Pro Max\nVersion: 3.3\nHigh-speed HLS streaming supported player.");
             }
         }
 
@@ -511,6 +557,14 @@
             if (!ch || !ch.url) return;
 
             activeId = id;
+
+            // Update Current Playing Channel Info Under Video
+            if (currentLang === 'bn') {
+                playingTitle.innerHTML = `বর্তমানে প্লে হচ্ছে: <span class="text-blue-400 font-bold">${ch.name}</span>`;
+            } else {
+                playingTitle.innerHTML = `Now Playing: <span class="text-blue-400 font-bold">${ch.name}</span>`;
+            }
+            playingCategory.textContent = ch.group || 'Live';
 
             // Highlight Active Channel UI
             document.querySelectorAll('#channelContainer > div').forEach(el => el.classList.remove('active-channel'));
