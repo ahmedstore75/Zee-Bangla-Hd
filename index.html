@@ -103,6 +103,25 @@
             flex-direction: column !important;
             align-items: center !important;
         }
+
+        /* Video Fit & Rotation Handling (No Crop) */
+        #mainVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures video fits perfectly without getting cropped */
+            background-color: #000;
+        }
+
+        /* Native Fullscreen video fitting */
+        video:-webkit-full-screen {
+            object-fit: contain !important;
+        }
+        video:-ms-fullscreen {
+            object-fit: contain !important;
+        }
+        video:fullscreen {
+            object-fit: contain !important;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
@@ -187,7 +206,7 @@
             
             <div class="relative w-full bg-black rounded-2xl overflow-hidden shadow-2xl border border-slate-800 aspect-video flex items-center justify-center group">
                 
-                <video id="mainVideo" class="w-full h-full object-contain" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer"></video>
+                <video id="mainVideo" class="w-full h-full object-contain" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
 
                 <!-- Initial/Error Overlay -->
                 <div id="playerOverlay" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center p-6 text-center z-10 transition-all duration-300">
