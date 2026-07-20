@@ -82,8 +82,8 @@
             border-color: #cbd5e1 !important;
         }
         body.light-theme .active-channel {
-            border-color: #2563eb !important;
-            background: linear-gradient(90deg, rgba(37, 99, 235, 0.15) 0%, rgba(255, 255, 255, 0.9) 100%) !important;
+            border-color: #ef4444 !important;
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.15) 0%, rgba(255, 255, 255, 0.9) 100%) !important;
         }
         /* Scrollbar Fix for Light Theme */
         body.light-theme ::-webkit-scrollbar-track { background: #f1f5f9; }
@@ -102,23 +102,27 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .active-channel {
-            border-color: #3b82f6 !important;
-            background: linear-gradient(90deg, rgba(59, 130, 246, 0.25) 0%, rgba(15, 23, 42, 0.6) 100%) !important;
+            border-color: #ef4444 !important;
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.2) 0%, rgba(15, 23, 42, 0.6) 100%) !important;
         }
         .pro-badge {
             background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
             color: #ffffff !important;
         }
+
+        /* Fix height stretch issue in Grid View */
         .grid-view {
             display: grid !important;
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 0.5rem !important;
+            align-content: start !important; /* Prevents vertical stretching */
         }
         .grid-view > div {
             flex-direction: column !important;
             align-items: center !important;
             text-align: center !important;
             padding: 0.75rem 0.5rem !important;
+            height: auto !important; /* Ensures fixed natural card height */
         }
         .grid-view > div .flex {
             flex-direction: column !important;
@@ -157,6 +161,15 @@
             background-color: #ff0000 !important;
             color: #ffffff !important;
             box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+        }
+
+        /* Active Live Badge Styling */
+        .live-active-badge {
+            background-color: #ff0000 !important;
+            color: #ffffff !important;
+            font-weight: 800;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+            border: none !important;
         }
 
         /* Video Display Setup */
@@ -306,7 +319,8 @@
                 </div>
             </div>
 
-            <div id="channelContainer" class="flex-1 overflow-y-auto pt-2 space-y-1.5 pr-1">
+            <!-- Align Content Start Fixes Empty Stretch -->
+            <div id="channelContainer" class="flex-1 overflow-y-auto pt-2 space-y-1.5 pr-1 content-start">
                 <p id="loadingText" class="text-center text-xs text-slate-500 py-10">প্লে-লিস্ট লোড হচ্ছে...</p>
             </div>
 
@@ -387,7 +401,6 @@
                 document.getElementById('statusText').textContent = "অনলাইন স্ট্রিমিং প্লেয়ার";
                 document.getElementById('menuBtnText').textContent = "মেনু";
                 document.getElementById('mFavText').textContent = "ফেভারিট চ্যানেল";
-                document.getElementById('mRecentText').textContent = "সাম্প্রতিক প্লে";
                 document.getElementById('mRefreshText').textContent = "প্লে-লিস্ট রিফ্রেশ";
                 document.getElementById('mSupportText').textContent = "সাপোর্ট (Facebook)";
                 document.getElementById('mInfoText').textContent = "অ্যাপ তথ্য";
@@ -541,10 +554,12 @@
 
             channelContainer.innerHTML = list.map((ch) => {
                 const isFav = favorites.includes(ch.url);
+                const isActive = activeUrl === ch.url;
                 const encodedUrl = encodeURIComponent(ch.url);
+                
                 return `
                 <div onclick="playChannel(decodeURIComponent('${encodedUrl}'))" 
-                    class="p-2 rounded-xl border border-slate-800/80 cursor-pointer hover:bg-slate-800/60 transition flex items-center justify-between gap-2 ${activeUrl === ch.url ? 'active-channel' : ''}">
+                    class="p-2 rounded-xl border border-slate-800/80 cursor-pointer hover:bg-slate-800/60 transition flex items-center justify-between gap-2 ${isActive ? 'active-channel' : ''}">
                     <div class="flex items-center gap-2.5 overflow-hidden flex-1">
                         <div class="w-8 h-8 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden">
                             ${ch.logo ? `<img src="${ch.logo}" class="w-full h-full object-cover" onerror="this.style.display='none'">` : `<i class="fa-solid fa-tv text-[10px] text-slate-600"></i>`}
@@ -558,7 +573,7 @@
                         <button onclick="toggleFavorite(decodeURIComponent('${encodedUrl}'), event)" class="p-1.5 hover:scale-125 transition text-xs">
                             <i class="${isFav ? 'fa-solid text-amber-400' : 'fa-regular text-slate-500'} fa-star"></i>
                         </button>
-                        <span class="text-[9px] bg-blue-600/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.5 rounded font-mono uppercase">LIVE</span>
+                        ${isActive ? `<span class="live-active-badge text-[9px] px-2 py-0.5 rounded font-mono uppercase">LIVE</span>` : ''}
                     </div>
                 </div>
             `}).join('');
