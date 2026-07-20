@@ -115,14 +115,14 @@
             display: grid !important;
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 0.5rem !important;
-            align-content: start !important; /* Prevents vertical stretching */
+            align-content: start !important;
         }
         .grid-view > div {
             flex-direction: column !important;
             align-items: center !important;
             text-align: center !important;
             padding: 0.75rem 0.5rem !important;
-            height: auto !important; /* Ensures fixed natural card height */
+            height: auto !important;
         }
         .grid-view > div .flex {
             flex-direction: column !important;
@@ -261,10 +261,24 @@
         </div>
     </header>
 
+    <!-- 🆕 হেডারের ঠিক নিচে নোটিশ সেকশন -->
+    <div class="max-w-7xl mx-auto w-full px-3 lg:px-5 pt-3">
+        <div class="glass-card rounded-xl px-2.5 py-1 border border-slate-800/80 shadow-md">
+            <div class="flex items-center gap-2">
+                <span class="pure-red-badge text-[10px] font-bold px-2 py-0.5 rounded shrink-0 flex items-center gap-1 uppercase tracking-wide">
+                    <i class="fa-solid fa-bullhorn text-[9px]"></i> নোটিশ
+                </span>
+                <marquee id="noticeText" behavior="scroll" direction="left" class="text-[11px] text-slate-300 font-medium tracking-wide leading-tight">
+                    স্বাগতম! কোনো চ্যানেল লোড না হলে প্লে-লিস্ট রিফ্রেশ করুন অথবা অন্য ক্যাটাগরি থেকে চ্যানেল প্লে করুন। নিরবচ্ছিন্ন লাইভ টিভি উপভোগ করুন।
+                </marquee>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Content Grid -->
     <main class="max-w-7xl mx-auto w-full p-3 lg:p-5 flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 items-start pt-3">
 
-        <!-- Left Column: Video Player & Slim Notice Section -->
+        <!-- Left Column: Video Player Section -->
         <div class="lg:col-span-2 flex flex-col gap-3">
             
             <div class="player-3d-card relative w-full bg-black rounded-2xl overflow-hidden aspect-video flex items-center justify-center group">
@@ -276,18 +290,6 @@
                     </div>
                     <h3 id="overlayTitle" class="text-xs font-semibold text-slate-200">চ্যানেল সিলেক্ট করুন</h3>
                     <p id="overlayDesc" class="text-[11px] text-slate-400 max-w-xs mt-1">ডানপাশের তালিকা থেকে যেকোনো চ্যানেল নির্বাচন করে প্লে করুন।</p>
-                </div>
-            </div>
-
-            <!-- Notice Section -->
-            <div class="glass-card rounded-xl px-2.5 py-1 border border-slate-800/80 shadow-md">
-                <div class="flex items-center gap-2">
-                    <span class="pure-red-badge text-[10px] font-bold px-2 py-0.5 rounded shrink-0 flex items-center gap-1 uppercase tracking-wide">
-                        <i class="fa-solid fa-bullhorn text-[9px]"></i> নোটিশ
-                    </span>
-                    <marquee id="noticeText" behavior="scroll" direction="left" class="text-[11px] text-slate-300 font-medium tracking-wide leading-tight">
-                        স্বাগতম! কোনো চ্যানেল লোড না হলে প্লে-লিস্ট রিফ্রেশ করুন অথবা অন্য ক্যাটাগরি থেকে চ্যানেল প্লে করুন। নিরবচ্ছিন্ন লাইভ টিভি উপভোগ করুন।
-                    </marquee>
                 </div>
             </div>
 
@@ -401,6 +403,7 @@
                 document.getElementById('statusText').textContent = "অনলাইন স্ট্রিমিং প্লেয়ার";
                 document.getElementById('menuBtnText').textContent = "মেনু";
                 document.getElementById('mFavText').textContent = "ফেভারিট চ্যানেল";
+                document.getElementById('mRecentText').textContent = "সাম্প্রতিক প্লে";
                 document.getElementById('mRefreshText').textContent = "প্লে-লিস্ট রিফ্রেশ";
                 document.getElementById('mSupportText').textContent = "সাপোর্ট (Facebook)";
                 document.getElementById('mInfoText').textContent = "অ্যাপ তথ্য";
