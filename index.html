@@ -194,7 +194,7 @@
                 <!-- Dropdown Menu Box -->
                 <div id="headerMenu" class="hidden absolute right-0 mt-2 w-60 rounded-2xl bg-slate-900/95 border border-slate-800 shadow-2xl z-50 p-2.5 space-y-1.5 backdrop-blur-xl">
                     
-                    <!-- 🆕 1. Favorite Channels Button -->
+                    <!-- 1. Favorite Channels Button -->
                     <button onclick="showFavorites(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2.5 text-xs text-slate-200 rounded-xl flex items-center gap-2.5 shadow-sm">
                         <div class="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0">
                             <i class="fa-solid fa-star text-xs"></i>
@@ -202,12 +202,12 @@
                         <span id="mFavText" class="font-medium">ফেভারিট চ্যানেল</span>
                     </button>
 
-                    <!-- 🆕 2. Recent Channels Button -->
+                    <!-- 2. Recent Channels Button ("সাম্প্রতিক প্লে") -->
                     <button onclick="showRecents(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2.5 text-xs text-slate-200 rounded-xl flex items-center gap-2.5 shadow-sm">
                         <div class="w-6 h-6 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0">
                             <i class="fa-solid fa-clock-rotate-left text-xs"></i>
                         </div>
-                        <span id="mRecentText" class="font-medium">রিসেন্ট প্লেড</span>
+                        <span id="mRecentText" class="font-medium">সাম্প্রতিক প্লে</span>
                     </button>
 
                     <hr class="border-slate-800/80 my-1">
@@ -411,7 +411,7 @@
                 document.getElementById('statusText').textContent = "অনলাইন স্ট্রিমিং প্লেয়ার";
                 document.getElementById('menuBtnText').textContent = "মেনু";
                 document.getElementById('mFavText').textContent = "ফেভারিট চ্যানেল";
-                document.getElementById('mRecentText').textContent = "রিসেন্ট প্লেড";
+                document.getElementById('mRecentText').textContent = "সাম্প্রতিক প্লে";
                 document.getElementById('mRefreshText').textContent = "প্লে-লিস্ট রিফ্রেশ";
                 document.getElementById('mSupportText').textContent = "সাপোর্ট (Facebook)";
                 document.getElementById('mInfoText').textContent = "অ্যাপ তথ্য";
@@ -527,7 +527,6 @@
             });
         }
 
-        // 🌟 Toggle Favorite Feature
         function toggleFavorite(id, event) {
             event.stopPropagation();
             if (favorites.includes(id)) {
@@ -539,7 +538,6 @@
             filterChannels();
         }
 
-        // Show Favorites
         function showFavorites() {
             categorySelect.value = "ALL";
             document.getElementById('searchInput').value = "";
@@ -547,7 +545,6 @@
             renderChannels(favChannels);
         }
 
-        // Show Recently Played
         function showRecents() {
             categorySelect.value = "ALL";
             document.getElementById('searchInput').value = "";
@@ -579,7 +576,6 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-1.5 shrink-0">
-                        <!-- Star Icon for Favorite -->
                         <button onclick="toggleFavorite(${ch.id}, event)" class="p-1.5 hover:scale-110 transition text-xs">
                             <i class="${isFav ? 'fa-solid text-amber-400' : 'fa-regular text-slate-500'} fa-star"></i>
                         </button>
@@ -608,11 +604,9 @@
 
             activeId = id;
 
-            // Save to Recents
             recents = [id, ...recents.filter(rId => rId !== id)].slice(0, 15);
             localStorage.setItem('iptv_recents', JSON.stringify(recents));
 
-            // Highlight Active
             document.querySelectorAll('#channelContainer > div').forEach(el => el.classList.remove('active-channel'));
             const activeEl = document.getElementById(`ch-${id}`);
             if (activeEl) activeEl.classList.add('active-channel');
