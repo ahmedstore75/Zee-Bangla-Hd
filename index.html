@@ -150,7 +150,7 @@
             text-align: center !important;
             padding: 0.75rem 0.5rem !important;
             height: auto !important;
-            max-height: 120px !important;
+            max-height: 130px !important;
         }
         .grid-view > div .flex {
             flex-direction: column !important;
@@ -324,7 +324,7 @@
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <select id="categorySelect" onchange="filterChannels()" 
+                    <select id="categorySelect" onchange="onCategoryChange()" 
                         class="w-1/3 bg-slate-950/80 text-[10px] text-slate-200 rounded-lg px-2 py-1.5 border border-slate-800 focus:outline-none focus:border-blue-500 transition cursor-pointer">
                         <option value="ALL">সকল ক্যাটাগরি</option>
                     </select>
@@ -579,9 +579,9 @@
                 return `
                 <div onclick="playChannel(decodeURIComponent('${encodedUrl}'))" 
                     class="p-1.5 rounded-lg border border-slate-800/80 cursor-pointer hover:bg-slate-800/60 transition flex items-center justify-between gap-2 ${isActive ? 'active-channel' : ''}">
-                    <div class="flex items-center gap-2 overflow-hidden flex-1">
-                        <div class="w-7 h-7 rounded-md bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden">
-                            ${ch.logo ? `<img src="${ch.logo}" class="w-full h-full object-cover" onerror="this.style.display='none'">` : `<i class="fa-solid fa-tv text-[9px] text-slate-600"></i>`}
+                    <div class="flex items-center gap-2.5 overflow-hidden flex-1">
+                        <div class="w-9 h-9 rounded-md bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden p-0.5">
+                            ${ch.logo ? `<img src="${ch.logo}" class="w-full h-full object-contain" onerror="this.style.display='none'">` : `<i class="fa-solid fa-tv text-xs text-slate-600"></i>`}
                         </div>
                         <div class="overflow-hidden">
                             <h4 class="text-[11px] font-semibold text-slate-200 truncate">${ch.name}</h4>
@@ -598,17 +598,33 @@
             `}).join('');
         }
 
+        /* Category Select Change Handler */
+        function onCategoryChange() {
+            document.getElementById('searchInput').value = ""; // Clear search when category manually changed
+            filterChannels();
+        }
+
+        /* Global Search Logic: Search across ALL channels automatically */
         function filterChannels() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const selectedCategory = categorySelect.value;
 
-            const filtered = allChannels.filter(c => {
-                const matchesSearch = c.name.toLowerCase().includes(query) || c.group.toLowerCase().includes(query);
-                const matchesCategory = selectedCategory === 'ALL' || c.group === selectedCategory;
-                return matchesSearch && matchesCategory;
-            });
-
-            renderChannels(filtered);
+            // If user typed anything in search, search across ALL channels and reset category dropdown to ALL
+            if (query.length > 0) {
+                categorySelect.value = "ALL";
+                const filtered = allChannels.filter(c => {
+                    const channelName = (c.name || '').toLowerCase();
+                    const channelGroup = (c.group || '').toLowerCase();
+                    return channelName.includes(query) || channelGroup.includes(query);
+                });
+                renderChannels(filtered);
+            } else {
+                // If search input is empty, filter normally based on category selection
+                const filtered = (selectedCategory === 'ALL') 
+                    ? allChannels 
+                    : allChannels.filter(c => c.group === selectedCategory);
+                renderChannels(filtered);
+            }
         }
 
         function playChannel(url) {
