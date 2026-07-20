@@ -21,57 +21,74 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        /* Light Theme Overrides */
+        /* Fully Fixed Light Theme Overrides */
         body.light-theme {
-            background-color: #f1f5f9;
-            color: #0f172a;
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
         }
         body.light-theme .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            border-color: rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9) !important;
+            border-color: #cbd5e1 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
         }
         body.light-theme header, 
         body.light-theme #headerMenu {
-            background-color: #ffffff;
-            border-color: #e2e8f0;
+            background-color: #ffffff !important;
+            border-color: #cbd5e1 !important;
         }
+        /* Fix Text Colors */
+        body.light-theme #appTitle,
+        body.light-theme #chListTitle,
+        body.light-theme h3, 
+        body.light-theme h4,
         body.light-theme .text-white, 
         body.light-theme .text-slate-100, 
         body.light-theme .text-slate-200, 
         body.light-theme .text-slate-300 {
             color: #0f172a !important;
         }
+        body.light-theme #statusText,
+        body.light-theme #noticeText,
         body.light-theme .text-slate-400, 
         body.light-theme .text-slate-500 {
-            color: #64748b !important;
+            color: #475569 !important;
         }
+        /* Fix Input & Select Fields */
         body.light-theme input, 
         body.light-theme select {
-            background-color: #e2e8f0 !important;
+            background-color: #f1f5f9 !important;
             border-color: #cbd5e1 !important;
             color: #0f172a !important;
         }
+        /* Fix Dropdown Menu & List Buttons */
         body.light-theme .menu-btn-item {
-            background-color: #f8fafc !important;
+            background-color: #f1f5f9 !important;
             border-color: #e2e8f0 !important;
-            color: #1e293b !important;
+            color: #0f172a !important;
         }
         body.light-theme .menu-btn-item:hover {
             background-color: #e2e8f0 !important;
         }
-        body.light-theme .menu-btn-item:active {
-            background-color: #cbd5e1 !important;
-        }
+        /* Fix Channel List Items */
         body.light-theme #channelContainer > div {
-            border-color: #e2e8f0;
+            background-color: #ffffff !important;
+            border-color: #e2e8f0 !important;
         }
         body.light-theme #channelContainer > div:hover {
-            background-color: #e2e8f0;
+            background-color: #f1f5f9 !important;
+        }
+        body.light-theme #channelContainer .bg-slate-950 {
+            background-color: #e2e8f0 !important;
+            border-color: #cbd5e1 !important;
         }
         body.light-theme .active-channel {
-            border-color: #3b82f6 !important;
-            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(241, 245, 249, 0.8) 100%) !important;
+            border-color: #2563eb !important;
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.15) 0%, rgba(255, 255, 255, 0.9) 100%) !important;
         }
+        /* Scrollbar Fix for Light Theme */
+        body.light-theme ::-webkit-scrollbar-track { background: #f1f5f9; }
+        body.light-theme ::-webkit-scrollbar-thumb { background: #cbd5e1; }
+        body.light-theme ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
@@ -90,6 +107,7 @@
         }
         .pro-badge {
             background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            color: #ffffff !important;
         }
         .grid-view {
             display: grid !important;
@@ -164,13 +182,13 @@
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 id="appTitle" class="text-sm font-bold tracking-wide text-white">আইপি টিভি লাইভ</h1>
-                        <span class="pro-badge text-[9px] font-black text-white px-1.5 py-0.5 rounded tracking-wider uppercase">PRO MAX</span>
+                        <span class="pro-badge text-[9px] font-black px-1.5 py-0.5 rounded tracking-wider uppercase">PRO MAX</span>
                     </div>
                     <p id="statusText" class="text-[10px] text-slate-400">অনলাইন স্ট্রিমিং প্লেয়ার</p>
                 </div>
             </div>
 
-            <!-- Original Clean Menu Button -->
+            <!-- Header Menu Button -->
             <div class="relative">
                 <button onclick="toggleMenu()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 active:scale-95 text-xs text-slate-200 border border-slate-700 transition flex items-center gap-2 shadow-sm">
                     <i class="fa-solid fa-bars text-blue-400"></i>
@@ -180,13 +198,11 @@
                 <!-- Dropdown Menu Box -->
                 <div id="headerMenu" class="hidden absolute right-0 mt-2 w-56 rounded-xl bg-slate-900/95 border border-slate-800 shadow-2xl z-50 p-2 space-y-1 backdrop-blur-xl">
                     
-                    <!-- Favorite Channels Button -->
                     <button onclick="showFavorites(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
                         <i class="fa-solid fa-star text-amber-400 text-xs w-4 text-center"></i>
                         <span id="mFavText" class="font-medium">ফেভারিট চ্যানেল</span>
                     </button>
 
-                    <!-- Recent Channels Button -->
                     <button onclick="showRecents(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
                         <i class="fa-solid fa-clock-rotate-left text-purple-400 text-xs w-4 text-center"></i>
                         <span id="mRecentText" class="font-medium">সাম্প্রতিক প্লে</span>
@@ -194,25 +210,21 @@
 
                     <hr class="border-slate-800 my-1">
 
-                    <!-- Refresh Playlist -->
                     <button onclick="fetchPlaylist(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
                         <i class="fa-solid fa-rotate-right text-blue-400 text-xs w-4 text-center"></i>
                         <span id="mRefreshText" class="font-medium">প্লে-লিস্ট রিফ্রেশ</span>
                     </button>
 
-                    <!-- Toggle View Mode -->
                     <button onclick="toggleLayout(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
                         <i id="layoutIcon" class="fa-solid fa-border-all text-teal-400 text-xs w-4 text-center"></i>
                         <span id="layoutText" class="font-medium">গ্রিড ভিউ চালু করুন</span>
                     </button>
 
-                    <!-- Theme Toggle -->
                     <button onclick="toggleTheme(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
                         <i id="themeIcon" class="fa-solid fa-sun text-yellow-400 text-xs w-4 text-center"></i>
                         <span id="themeText" class="font-medium">লাইট থিম করুন</span>
                     </button>
 
-                    <!-- Language Switcher -->
                     <button onclick="toggleLanguage(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
                         <i class="fa-solid fa-language text-emerald-400 text-xs w-4 text-center"></i>
                         <span id="langText" class="font-medium">English Language</span>
@@ -220,13 +232,11 @@
 
                     <hr class="border-slate-800 my-1">
 
-                    <!-- Facebook Support Link -->
                     <a href="https://facebook.com/ahmed.bd.fb" target="_blank" onclick="toggleMenu()" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5 block">
                         <i class="fa-brands fa-facebook text-blue-500 text-xs w-4 text-center"></i>
                         <span id="mSupportText" class="font-medium">সাপোর্ট (Facebook)</span>
                     </a>
 
-                    <!-- App Info -->
                     <button onclick="showAppInfo(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-2 text-xs text-slate-200 rounded-lg flex items-center gap-2.5">
                         <i class="fa-solid fa-circle-info text-sky-400 text-xs w-4 text-center"></i>
                         <span id="mInfoText" class="font-medium">অ্যাপ তথ্য</span>
@@ -244,11 +254,9 @@
         <!-- Left Column: Video Player & Slim Notice Section -->
         <div class="lg:col-span-2 flex flex-col gap-3">
             
-            <!-- Video Player Box -->
             <div class="player-3d-card relative w-full bg-black rounded-2xl overflow-hidden aspect-video flex items-center justify-center group">
                 <video id="mainVideo" class="w-full h-full object-fill" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
 
-                <!-- Initial/Error Overlay -->
                 <div id="playerOverlay" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center p-6 text-center z-10 transition-all duration-300">
                     <div class="w-14 h-14 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center text-xl mb-3 shadow-inner">
                         <i class="fa-solid fa-play"></i>
@@ -258,7 +266,7 @@
                 </div>
             </div>
 
-            <!-- 🆕 চিকন ও কমপ্যাক্ট নোটিশ সেকশন -->
+            <!-- Notice Section -->
             <div class="glass-card rounded-xl px-2.5 py-1 border border-slate-800/80 shadow-md">
                 <div class="flex items-center gap-2">
                     <span class="pure-red-badge text-[10px] font-bold px-2 py-0.5 rounded shrink-0 flex items-center gap-1 uppercase tracking-wide">
@@ -275,7 +283,6 @@
         <!-- Right Column: Channel List Sidebar -->
         <div class="glass-card rounded-2xl p-3 flex flex-col h-[520px] lg:h-[460px] shadow-xl">
             
-            <!-- Search & Dynamic Category Filters -->
             <div class="space-y-2.5 pb-2.5 border-b border-slate-800/80">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
@@ -285,7 +292,6 @@
                     <span id="channelCounter" class="text-[10px] bg-blue-600 text-white font-bold border border-blue-500 px-2 py-0.5 rounded-full font-mono shadow-sm">0</span>
                 </div>
 
-                <!-- Category Dropdown + Search Box Line -->
                 <div class="flex items-center gap-2">
                     <select id="categorySelect" onchange="filterChannels()" 
                         class="w-1/3 bg-slate-950/80 text-[11px] text-slate-200 rounded-lg px-2 py-2 border border-slate-800 focus:outline-none focus:border-blue-500 transition cursor-pointer">
@@ -300,7 +306,6 @@
                 </div>
             </div>
 
-            <!-- Channel Items List Container -->
             <div id="channelContainer" class="flex-1 overflow-y-auto pt-2 space-y-1.5 pr-1">
                 <p id="loadingText" class="text-center text-xs text-slate-500 py-10">প্লে-লিস্ট লোড হচ্ছে...</p>
             </div>
@@ -350,7 +355,7 @@
 
             if (isLightTheme) {
                 document.body.classList.add('light-theme');
-                themeIcon.className = "fa-solid fa-moon text-xs w-4 text-center";
+                themeIcon.className = "fa-solid fa-moon text-blue-600 text-xs w-4 text-center";
                 themeText.textContent = currentLang === 'bn' ? "ডার্ক থিম করুন" : "Dark Theme";
             } else {
                 document.body.classList.remove('light-theme');
