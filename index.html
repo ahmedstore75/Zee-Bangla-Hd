@@ -116,11 +116,12 @@
         @media screen and (orientation: landscape) and (max-height: 600px) {
             .app-main-grid {
                 display: grid !important;
-                grid-template-columns: 1.2fr 1fr !important;
+                grid-template-columns: 1.4fr 1fr !important;
                 gap: 0.75rem !important;
             }
             .channel-card-box {
-                max-height: calc(100vh - 120px) !important;
+                max-height: calc(100vh - 100px) !important;
+                min-height: auto !important;
             }
         }
 
@@ -191,10 +192,11 @@
             border: none !important;
         }
 
+        /* Fixed aspect-ratio and no-crop video player */
         #mainVideo {
             width: 100%;
             height: 100%;
-            object-fit: fill !important;
+            object-fit: contain !important;
             background-color: #000;
         }
     </style>
@@ -299,7 +301,7 @@
         <!-- Player Column -->
         <div class="w-full flex flex-col gap-2">
             <div class="player-3d-card relative w-full bg-black rounded-xl overflow-hidden aspect-video flex items-center justify-center group shadow-2xl">
-                <video id="mainVideo" class="w-full h-full object-fill" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
+                <video id="mainVideo" class="w-full h-full object-contain" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
 
                 <div id="playerOverlay" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center p-4 text-center z-10 transition-all duration-300">
                     <div class="w-10 h-10 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center text-lg mb-2 shadow-inner">
@@ -602,7 +604,7 @@
 
         /* Category Select Change Handler */
         function onCategoryChange() {
-            document.getElementById('searchInput').value = ""; // Clear search when category manually changed
+            document.getElementById('searchInput').value = ""; 
             filterChannels();
         }
 
