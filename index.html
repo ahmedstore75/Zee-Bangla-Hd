@@ -104,23 +104,23 @@
             align-items: center !important;
         }
 
-        /* Video Fit & Rotation Handling (No Crop) */
+        /* Full Screen Stretch with NO Black Borders */
         #mainVideo {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Ensures video fits perfectly without getting cropped */
+            object-fit: cover; /* 👈 দূর করে স্ক্রিনে পুরোপুরি ফিট করবে */
             background-color: #000;
         }
 
         /* Native Fullscreen video fitting */
         video:-webkit-full-screen {
-            object-fit: contain !important;
+            object-fit: cover !important;
         }
         video:-ms-fullscreen {
-            object-fit: contain !important;
+            object-fit: cover !important;
         }
         video:fullscreen {
-            object-fit: contain !important;
+            object-fit: cover !important;
         }
     </style>
 </head>
@@ -206,7 +206,7 @@
             
             <div class="relative w-full bg-black rounded-2xl overflow-hidden shadow-2xl border border-slate-800 aspect-video flex items-center justify-center group">
                 
-                <video id="mainVideo" class="w-full h-full object-contain" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
+                <video id="mainVideo" class="w-full h-full object-cover" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
 
                 <!-- Initial/Error Overlay -->
                 <div id="playerOverlay" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center p-6 text-center z-10 transition-all duration-300">
