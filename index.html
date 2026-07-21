@@ -562,9 +562,11 @@
             if (mode === 'contain') {
                 video.classList.remove('fit-fill');
                 video.classList.add('fit-contain');
+                video.style.objectFit = 'contain';
             } else {
                 video.classList.remove('fit-contain');
                 video.classList.add('fit-fill');
+                video.style.objectFit = 'fill';
             }
 
             if (!document.fullscreenElement) {
