@@ -28,6 +28,16 @@
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.35) !important;
         }
 
+        /* TV Remote Focus State */
+        #channelContainer > div:focus,
+        #channelContainer > div:focus-within {
+            outline: none !important;
+            border: 2px solid #3b82f6 !important;
+            background-color: rgba(59, 130, 246, 0.2) !important;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5) !important;
+            transform: scale(1.02);
+        }
+
         /* Light Theme Overrides */
         body.light-theme {
             background-color: #f8fafc !important;
@@ -769,7 +779,7 @@
                 const encodedUrl = encodeURIComponent(ch.url);
                 
                 return `
-                <div onclick="playChannel(decodeURIComponent('${encodedUrl}'))" 
+                <div tabindex="0" onclick="playChannel(decodeURIComponent('${encodedUrl}'))" 
                     class="p-2 rounded-lg border border-slate-800/80 cursor-pointer hover:bg-slate-800/60 transition flex items-center justify-between gap-1.5 ${isActive ? 'active-channel' : ''}">
                     <div class="flex items-center gap-2 overflow-hidden flex-1 flex-channel-info">
                         <div class="w-10 h-10 rounded-md bg-slate-900 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden p-0.5 relative">
@@ -879,6 +889,49 @@
             overlayDesc.textContent = desc;
             overlay.classList.remove('opacity-0', 'pointer-events-none');
         }
+
+        // Android TV Remote Navigation Listener (Up, Down, Left, Right & Play/Pause)
+        document.addEventListener('keydown', (e) => {
+            const focusableChannels = Array.from(document.querySelectorAll('#channelContainer > div'));
+            if (focusableChannels.length === 0) return;
+
+            const currentIndex = focusableChannels.indexOf(document.activeElement);
+
+            switch (e.key) {
+                case 'ArrowRight':
+                case 'ArrowDown':
+                    e.preventDefault();
+                    if (currentIndex === -1) {
+                        focusableChannels[0].focus();
+                    } else if (currentIndex < focusableChannels.length - 1) {
+                        focusableChannels[currentIndex + 1].focus();
+                    }
+                    break;
+
+                case 'ArrowLeft':
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (currentIndex > 0) {
+                        focusableChannels[currentIndex - 1].focus();
+                    }
+                    break;
+
+                case 'Enter':
+                case 'Select':
+                    if (currentIndex !== -1) {
+                        e.preventDefault();
+                        document.activeElement.click(); // OK চাপলে সিলেক্টেড চ্যানেল প্লে হবে
+                    }
+                    break;
+
+                case 'MediaPlayPause':
+                case 'MediaPlay':
+                    e.preventDefault();
+                    if (video.paused) video.play();
+                    else video.pause();
+                    break;
+            }
+        });
     </script>
 </body>
 </html>
