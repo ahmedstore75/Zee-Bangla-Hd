@@ -202,6 +202,17 @@
             object-fit: fill !important;
             background-color: #000;
         }
+
+        /* Hide native video buffering/loading indicators to prevent duplicate loading spinners */
+        video::-webkit-media-controls-start-playback-button,
+        video::-webkit-media-controls-panel {
+            z-index: 1;
+        }
+        
+        #playerOverlay {
+            background-color: #020617 !important; /* Solid background to completely hide native elements beneath it */
+            z-index: 30;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
@@ -306,7 +317,7 @@
                 <video id="mainVideo" class="w-full h-full object-fill" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
 
                 <!-- Player Loading & Notice Overlay -->
-                <div id="playerOverlay" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center p-4 text-center z-10 transition-all duration-300">
+                <div id="playerOverlay" class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center z-30 transition-opacity duration-300">
                     <div id="overlayIconBox" class="w-10 h-10 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center text-lg mb-2 shadow-inner">
                         <i id="overlayIcon" class="fa-solid fa-play"></i>
                     </div>
