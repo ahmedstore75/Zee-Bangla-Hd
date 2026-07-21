@@ -39,7 +39,8 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
         }
         body.light-theme header, 
-        body.light-theme #headerMenu {
+        body.light-theme #headerMenu,
+        body.light-theme #videoSizeModal {
             background-color: #ffffff !important;
             border-color: #cbd5e1 !important;
         }
@@ -284,7 +285,7 @@
                 </button>
 
                 <!-- Dropdown Menu Box -->
-                <div id="headerMenu" class="hidden absolute right-0 mt-2 w-56 rounded-xl bg-slate-900/95 border border-slate-800 shadow-2xl z-50 p-2 space-y-1 backdrop-blur-xl">
+                <div id="headerMenu" class="hidden absolute right-0 mt-2 w-60 rounded-xl bg-slate-900/95 border border-slate-800 shadow-2xl z-50 p-2 space-y-1 backdrop-blur-xl">
                     
                     <button onclick="showFavorites(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
                         <i class="fa-solid fa-star text-amber-400 text-xs w-4 text-center"></i>
@@ -308,10 +309,30 @@
                         <span id="mCustomText" class="font-medium">কাস্টম লিংক প্লে করুন</span>
                     </button>
 
-                    <button onclick="toggleFullScreen('contain'); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
-                        <i class="fa-solid fa-expand text-pink-400 text-xs w-4 text-center"></i>
-                        <span id="mFsOriginalText" class="font-medium">ফুলস্ক্রিন (অরিজিনাল)</span>
+                    <!-- Video Size Option Toggle Button -->
+                    <button onclick="toggleVideoSizeOptions()" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-expand text-pink-400 text-xs w-4 text-center"></i>
+                            <span id="mVideoSizeLabel" class="font-medium">
+                                <span id="mVideoSizePrefixLabel">ভিডিও সাইজ: </span>
+                                <span id="currentSizeText" class="text-blue-400">ফুল ফিট</span>
+                            </span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
                     </button>
+
+                    <!-- Radio Option Modal/Submenu Box -->
+                    <div id="videoSizeModal" class="hidden bg-slate-950/90 border border-slate-800 rounded-lg p-2 space-y-1 mt-1">
+                        <label class="flex items-center justify-between p-1.5 rounded cursor-pointer hover:bg-slate-800/50 text-xs text-slate-200">
+                            <span id="lblOriginal">ভিডিও সাইজ: অরিজিনাল</span>
+                            <input type="radio" name="videoSizeRadio" value="contain" onchange="changeVideoSize('contain')" class="accent-teal-500 cursor-pointer">
+                        </label>
+                        <hr class="border-slate-800/50">
+                        <label class="flex items-center justify-between p-1.5 rounded cursor-pointer hover:bg-slate-800/50 text-xs text-slate-200">
+                            <span id="lblStretch">ভিডিও সাইজ: ফুল ফিট</span>
+                            <input type="radio" name="videoSizeRadio" value="fill" checked onchange="changeVideoSize('fill')" class="accent-teal-500 cursor-pointer">
+                        </label>
+                    </div>
 
                     <button onclick="toggleLayout(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
                         <i id="layoutIcon" class="fa-solid fa-list text-teal-400 text-xs w-4 text-center"></i>
@@ -426,6 +447,7 @@
         let isGridView = true; 
         let isLightTheme = false;
         let currentLang = 'bn'; 
+        let currentVideoMode = 'fill'; // 'fill' or 'contain'
 
         const video = document.getElementById('mainVideo');
         const overlay = document.getElementById('playerOverlay');
@@ -476,6 +498,42 @@
             }
         });
 
+        function toggleVideoSizeOptions() {
+            const modal = document.getElementById('videoSizeModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function changeVideoSize(mode) {
+            currentVideoMode = mode;
+            const playerElem = document.getElementById('playerContainer');
+            const txtLabel = document.getElementById('currentSizeText');
+
+            if (mode === 'contain') {
+                video.classList.remove('fit-fill');
+                video.classList.add('fit-contain');
+                video.style.objectFit = 'contain';
+                txtLabel.textContent = currentLang === 'bn' ? "অরিজিনাল" : "Original";
+            } else {
+                video.classList.remove('fit-contain');
+                video.classList.add('fit-fill');
+                video.style.objectFit = 'fill';
+                txtLabel.textContent = currentLang === 'bn' ? "ফুল ফিট" : "Stretch";
+            }
+
+            // Auto Enter Fullscreen Mode
+            if (!document.fullscreenElement) {
+                if (playerElem.requestFullscreen) {
+                    playerElem.requestFullscreen();
+                } else if (playerElem.webkitRequestFullscreen) {
+                    playerElem.webkitRequestFullscreen();
+                } else if (playerElem.msRequestFullscreen) {
+                    playerElem.msRequestFullscreen();
+                }
+            }
+
+            toggleMenu();
+        }
+
         function toggleTheme() {
             isLightTheme = !isLightTheme;
             const themeIcon = document.getElementById('themeIcon');
@@ -503,7 +561,13 @@
                 document.getElementById('mRecentText').textContent = "Recently Played";
                 document.getElementById('mRefreshText').textContent = "Refresh Playlist";
                 document.getElementById('mCustomText').textContent = "Play Custom Stream";
-                document.getElementById('mFsOriginalText').textContent = "Fullscreen (Original)";
+                
+                // Video Size Translations
+                document.getElementById('mVideoSizePrefixLabel').textContent = "Video Size: ";
+                document.getElementById('currentSizeText').textContent = currentVideoMode === 'contain' ? "Original" : "Stretch";
+                document.getElementById('lblOriginal').textContent = "Video Size: Original";
+                document.getElementById('lblStretch').textContent = "Video Size: Stretch";
+
                 document.getElementById('mSupportText').textContent = "Support (Facebook)";
                 document.getElementById('chListTitle').textContent = "Channel List";
                 document.getElementById('searchInput').placeholder = "Search...";
@@ -519,7 +583,13 @@
                 document.getElementById('mRecentText').textContent = "সাম্প্রতিক প্লে";
                 document.getElementById('mRefreshText').textContent = "প্লে-লিস্ট রিফ্রেশ";
                 document.getElementById('mCustomText').textContent = "কাস্টম লিংক প্লে করুন";
-                document.getElementById('mFsOriginalText').textContent = "ফুলস্ক্রিন (অরিজিনাল)";
+                
+                // Video Size Translations
+                document.getElementById('mVideoSizePrefixLabel').textContent = "ভিডিও সাইজ: ";
+                document.getElementById('currentSizeText').textContent = currentVideoMode === 'contain' ? "অরিজিনাল" : "ফুল ফিট";
+                document.getElementById('lblOriginal').textContent = "ভিডিও সাইজ: অরিজিনাল";
+                document.getElementById('lblStretch').textContent = "ভিডিও সাইজ: ফুল ফিট";
+
                 document.getElementById('mSupportText').textContent = "সাপোর্ট (Facebook)";
                 document.getElementById('chListTitle').textContent = "চ্যানেল লিস্ট";
                 document.getElementById('searchInput').placeholder = "খুঁজুন...";
@@ -546,30 +616,6 @@
                 channelContainer.classList.remove('grid-view');
                 layoutIcon.className = "fa-solid fa-border-all text-teal-400 text-xs w-4 text-center";
                 layoutText.textContent = currentLang === 'bn' ? "গ্রিড ভিউ চালু করুন" : "Grid View";
-            }
-        }
-
-        function toggleFullScreen(mode = 'contain') {
-            const playerElem = document.getElementById('playerContainer');
-            
-            if (mode === 'contain') {
-                video.classList.remove('fit-fill');
-                video.classList.add('fit-contain');
-                video.style.objectFit = 'contain';
-            } else {
-                video.classList.remove('fit-contain');
-                video.classList.add('fit-fill');
-                video.style.objectFit = 'fill';
-            }
-
-            if (!document.fullscreenElement) {
-                if (playerElem.requestFullscreen) {
-                    playerElem.requestFullscreen();
-                } else if (playerElem.webkitRequestFullscreen) {
-                    playerElem.webkitRequestFullscreen();
-                } else if (playerElem.msRequestFullscreen) {
-                    playerElem.msRequestFullscreen();
-                }
             }
         }
 
