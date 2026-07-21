@@ -313,11 +313,6 @@
                         <span id="mFsOriginalText" class="font-medium">ফুলস্ক্রিন (অরিজিনাল)</span>
                     </button>
 
-                    <button onclick="toggleFullScreen('fill'); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
-                        <i class="fa-solid fa-up-right-and-down-left-from-center text-rose-400 text-xs w-4 text-center"></i>
-                        <span id="mFsFitText" class="font-medium">ফুলস্ক্রিন (ফুল ফিট)</span>
-                    </button>
-
                     <button onclick="toggleLayout(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
                         <i id="layoutIcon" class="fa-solid fa-list text-teal-400 text-xs w-4 text-center"></i>
                         <span id="layoutText" class="font-medium">লিস্ট ভিউ চালু করুন</span>
@@ -509,7 +504,6 @@
                 document.getElementById('mRefreshText').textContent = "Refresh Playlist";
                 document.getElementById('mCustomText').textContent = "Play Custom Stream";
                 document.getElementById('mFsOriginalText').textContent = "Fullscreen (Original)";
-                document.getElementById('mFsFitText').textContent = "Fullscreen (Full Fit)";
                 document.getElementById('mSupportText').textContent = "Support (Facebook)";
                 document.getElementById('chListTitle').textContent = "Channel List";
                 document.getElementById('searchInput').placeholder = "Search...";
@@ -526,7 +520,6 @@
                 document.getElementById('mRefreshText').textContent = "প্লে-লিস্ট রিফ্রেশ";
                 document.getElementById('mCustomText').textContent = "কাস্টম লিংক প্লে করুন";
                 document.getElementById('mFsOriginalText').textContent = "ফুলস্ক্রিন (অরিজিনাল)";
-                document.getElementById('mFsFitText').textContent = "ফুলস্ক্রিন (ফুল ফিট)";
                 document.getElementById('mSupportText').textContent = "সাপোর্ট (Facebook)";
                 document.getElementById('chListTitle').textContent = "চ্যানেল লিস্ট";
                 document.getElementById('searchInput').placeholder = "খুঁজুন...";
@@ -556,7 +549,7 @@
             }
         }
 
-        function toggleFullScreen(mode = 'fill') {
+        function toggleFullScreen(mode = 'contain') {
             const playerElem = document.getElementById('playerContainer');
             
             if (mode === 'contain') {
