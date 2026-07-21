@@ -700,8 +700,10 @@
                     class="p-2 rounded-lg border border-slate-800/80 cursor-pointer hover:bg-slate-800/60 transition flex items-center justify-between gap-1.5 ${isActive ? 'active-channel' : ''}">
                     <div class="flex items-center gap-2 overflow-hidden flex-1 flex-channel-info">
                         <div class="w-10 h-10 rounded-md bg-slate-900 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden p-0.5 relative">
-                            <i class="fa-solid fa-tv text-xs text-blue-400 opacity-80"></i>
-                            ${ch.logo ? `<img src="${ch.logo}" class="absolute inset-0 w-full h-full object-contain" onerror="this.style.display='none'">` : ''}
+                            ${ch.logo 
+                                ? `<img src="${ch.logo}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"><i class="fa-solid fa-tv text-xs text-blue-400 opacity-80 hidden"></i>` 
+                                : `<i class="fa-solid fa-tv text-xs text-blue-400 opacity-80"></i>`
+                            }
                         </div>
                         <div class="overflow-hidden w-full">
                             <h4 class="text-[11px] font-bold text-slate-100 truncate leading-tight">${ch.name}</h4>
