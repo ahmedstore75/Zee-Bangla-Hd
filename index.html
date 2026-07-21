@@ -85,6 +85,17 @@
             border-color: #cbd5e1 !important;
         }
 
+        /* Fixed Player Loading Text & Background for Light Theme */
+        body.light-theme #playerOverlay {
+            background-color: #f8fafc !important;
+        }
+        body.light-theme #overlayTitle {
+            color: #0f172a !important;
+        }
+        body.light-theme #overlayDesc {
+            color: #475569 !important;
+        }
+
         /* Fixed Active Channel specifically for Light Theme */
         body.light-theme #channelContainer .active-channel {
             border: 2px solid #ef4444 !important;
@@ -220,7 +231,7 @@
         }
 
         #playerOverlay {
-            background-color: #020617 !important;
+            background-color: #020617;
             z-index: 30 !important;
         }
     </style>
@@ -337,7 +348,7 @@
                 <video id="mainVideo" class="w-full h-full object-fill fit-fill" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
 
                 <!-- Player Loading & Notice Overlay -->
-                <div id="playerOverlay" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center p-4 text-center z-10 transition-all duration-300">
+                <div id="playerOverlay" class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center z-10 transition-all duration-300">
                     <div id="overlayIconBox" class="w-10 h-10 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center text-lg mb-2 shadow-inner">
                         <i id="overlayIcon" class="fa-solid fa-play"></i>
                     </div>
