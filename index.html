@@ -6,7 +6,7 @@
     <title>IPTV Live - Pro Max</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- HLS.js for Live Streaming -->
+    <!-- HLS.js for Live Streaming (High Compatibility) -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -217,7 +217,7 @@
                         <h1 id="appTitle" class="text-xs font-bold tracking-wide text-white">আইপি টিভি লাইভ</h1>
                         <span class="pro-badge text-[8px] font-black px-1 py-0.5 rounded tracking-wider uppercase">PRO MAX</span>
                     </div>
-                    <p id="statusText" class="text-[9px] text-slate-400 leading-none mt-0.5">অনলাইন স্ট্রিমিং প্লেয়ার</p>
+                    <p id="statusText" class="text-[9px] text-slate-400 leading-none mt-0.5">অনলাইন স্ট্রিমিং প্লেয়ার (Proxy Protected)</p>
                 </div>
             </div>
 
@@ -339,7 +339,7 @@
                 </div>
             </div>
 
-            <!-- Scrollable Area (Default Grid View Class Added) -->
+            <!-- Scrollable Area -->
             <div id="channelContainer" class="flex-1 overflow-y-auto pt-2 space-y-1.5 pr-1 content-start max-h-[500px] grid-view">
                 <p id="loadingText" class="text-center text-xs text-slate-500 py-6">প্লে-লিস্ট লোড হচ্ছে...</p>
             </div>
@@ -351,13 +351,19 @@
     <script>
         const currentPlaylistUrl = "https://raw.githubusercontent.com/sm-monirulislam/SM-Live-TV/refs/heads/main/Combined_Live_TV.m3u";
 
+        // CORS / Proxy List (Auto Bypasser)
+        const PROXIES = [
+            (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+            (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`
+        ];
+
         let allChannels = [];
         let currentlyDisplayedChannels = []; 
         let favorites = JSON.parse(localStorage.getItem('iptv_fav_urls')) || [];
         let recents = JSON.parse(localStorage.getItem('iptv_recent_urls')) || [];
         let hlsInstance = null;
         let activeUrl = "";
-        let isGridView = true; // Default Grid View State Enabled
+        let isGridView = true; 
         let isLightTheme = false;
         let currentLang = 'bn'; 
 
@@ -403,7 +409,7 @@
 
             if (currentLang === 'en') {
                 document.getElementById('appTitle').textContent = "IPTV Live";
-                document.getElementById('statusText').textContent = "Online Streaming Player";
+                document.getElementById('statusText').textContent = "Online Streaming Player (Proxy Protected)";
                 document.getElementById('menuBtnText').textContent = "Menu";
                 document.getElementById('mFavText').textContent = "Favorite Channels";
                 document.getElementById('mRecentText').textContent = "Recently Played";
@@ -418,7 +424,7 @@
                 document.getElementById('noticeText').textContent = "Welcome! If a channel does not load, please refresh the playlist or select another channel. Enjoy smooth live streaming.";
             } else {
                 document.getElementById('appTitle').textContent = "আইপি টিভি লাইভ";
-                document.getElementById('statusText').textContent = "অনলাইন স্ট্রিমিং প্লেয়ার";
+                document.getElementById('statusText').textContent = "অনলাইন স্ট্রিমিং প্লেয়ার (Proxy Protected)";
                 document.getElementById('menuBtnText').textContent = "মেনু";
                 document.getElementById('mFavText').textContent = "ফেভারিট চ্যানেল";
                 document.getElementById('mRecentText').textContent = "সাম্প্রতিক প্লে";
@@ -454,9 +460,9 @@
 
         function showAppInfo() {
             if (currentLang === 'bn') {
-                alert("আইপি টিভি লাইভ - Pro Max\nভার্সন: ৩.৮\nহাই-স্পিড HLS স্ট্রিমিং সাপোর্টেড প্লেয়ার।");
+                alert("আইপি টিভি লাইভ - Pro Max\nভার্সন: ৪.৩ (CORS Proxy Protection Engine)\nহাই-স্পিড অ্যান্টি-ব্লকিং প্লেয়ার।");
             } else {
-                alert("IPTV Live - Pro Max\nVersion: 3.8\nHigh-speed HLS streaming supported player.");
+                alert("IPTV Live - Pro Max\nVersion: 4.3 (CORS Proxy Protection Engine)\nHigh-speed Anti-Blocking Player.");
             }
         }
 
@@ -629,7 +635,8 @@
             }
         }
 
-        function playChannel(url) {
+        // Advanced Proxy Stream Loader
+        function playChannel(url, proxyIndex = -1) {
             const ch = allChannels.find(c => c.url === url);
             if (!ch || !ch.url) return;
 
@@ -639,8 +646,13 @@
             localStorage.setItem('iptv_recent_urls', JSON.stringify(recents));
 
             renderChannels(currentlyDisplayedChannels);
-
             overlay.classList.add('opacity-0', 'pointer-events-none');
+
+            // Select stream URL: direct URL first, then try proxies on error
+            let targetStreamUrl = url;
+            if (proxyIndex >= 0 && proxyIndex < PROXIES.length) {
+                targetStreamUrl = PROXIES[proxyIndex](url);
+            }
 
             if (hlsInstance) {
                 hlsInstance.destroy();
@@ -648,21 +660,29 @@
 
             if (Hls.isSupported()) {
                 hlsInstance = new Hls({ enableWorker: true, lowLatencyMode: true });
-                hlsInstance.loadSource(ch.url);
+                hlsInstance.loadSource(targetStreamUrl);
                 hlsInstance.attachMedia(video);
+                
                 hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
                     video.play().catch(e => console.log("Autoplay blocked:", e));
                 });
+
                 hlsInstance.on(Hls.Events.ERROR, (event, data) => {
                     if (data.fatal) {
-                        showError(
-                            currentLang === 'bn' ? "স্ট্রিম প্লে হতে সমস্যা হচ্ছে" : "Streaming Error", 
-                            currentLang === 'bn' ? "চ্যানেল লিংকটি অফলাইন অথবা CORS সিকিউরিটি দ্বারা ব্লক করা।" : "Stream link offline or blocked by CORS policy."
-                        );
+                        // Auto Switch to Proxy if Direct Play fails
+                        if (proxyIndex + 1 < PROXIES.length) {
+                            console.warn("Direct stream failed/blocked. Switching to Proxy:", proxyIndex + 1);
+                            playChannel(url, proxyIndex + 1);
+                        } else {
+                            showError(
+                                currentLang === 'bn' ? "স্ট্রিম প্লে হতে সমস্যা হচ্ছে" : "Streaming Error", 
+                                currentLang === 'bn' ? "চ্যানেল লিংকটি অফলাইন অথবা সিকিউরিটি দ্বারা ব্লক করা।" : "Stream link offline or blocked."
+                            );
+                        }
                     }
                 });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = ch.url;
+                video.src = targetStreamUrl;
                 video.play();
             }
         }
