@@ -46,7 +46,6 @@
         body.light-theme .text-slate-300 {
             color: #0f172a !important;
         }
-        body.light-theme #statusText,
         body.light-theme #noticeText,
         body.light-theme .text-slate-400, 
         body.light-theme .text-slate-500 {
@@ -97,7 +96,7 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        /* FIXED: Active Channel Background & Border */
+        /* Active Channel Background & Border */
         .active-channel {
             border-color: #ef4444 !important;
             background: linear-gradient(180deg, rgba(239, 68, 68, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
@@ -136,7 +135,7 @@
             }
         }
 
-        /* Grid View Styling - FIXED OVERLAP & HEIGHT */
+        /* Grid View Styling */
         .grid-view {
             display: grid !important;
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -221,7 +220,6 @@
                         <h1 id="appTitle" class="text-xs font-bold tracking-wide text-white">আইপি টিভি লাইভ</h1>
                         <span class="pro-badge text-[8px] font-black px-1 py-0.5 rounded tracking-wider uppercase">PRO MAX</span>
                     </div>
-                    <p id="statusText" class="text-[9px] text-slate-400 leading-none mt-0.5">অনলাইন স্ট্রিমিং প্লেয়ার (Proxy Protected)</p>
                 </div>
             </div>
 
@@ -412,7 +410,6 @@
 
             if (currentLang === 'en') {
                 document.getElementById('appTitle').textContent = "IPTV Live";
-                document.getElementById('statusText').textContent = "Online Streaming Player (Proxy Protected)";
                 document.getElementById('menuBtnText').textContent = "Menu";
                 document.getElementById('mFavText').textContent = "Favorite Channels";
                 document.getElementById('mRecentText').textContent = "Recently Played";
@@ -427,7 +424,6 @@
                 document.getElementById('noticeText').textContent = "Welcome! If a channel does not load, please refresh the playlist or select another channel. Enjoy smooth live streaming.";
             } else {
                 document.getElementById('appTitle').textContent = "আইপি টিভি লাইভ";
-                document.getElementById('statusText').textContent = "অনলাইন স্ট্রিমিং প্লেয়ার (Proxy Protected)";
                 document.getElementById('menuBtnText').textContent = "মেনু";
                 document.getElementById('mFavText').textContent = "ফেভারিট চ্যানেল";
                 document.getElementById('mRecentText').textContent = "সাম্প্রতিক প্লে";
@@ -572,7 +568,6 @@
             renderChannels(recentChannels);
         }
 
-        /* FIXED HTML Rendering for Grid & List layout */
         function renderChannels(list) {
             currentlyDisplayedChannels = list;
             channelCounter.textContent = list.length;
