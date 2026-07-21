@@ -890,11 +890,37 @@
             overlay.classList.remove('opacity-0', 'pointer-events-none');
         }
 
-        // Android TV Remote Navigation Listener (Up, Down, Left, Right & Play/Pause)
+        // Android TV Remote Navigation & Universal Back Button Listener
         document.addEventListener('keydown', (e) => {
             const focusableChannels = Array.from(document.querySelectorAll('#channelContainer > div'));
-            if (focusableChannels.length === 0) return;
+            const videoSizeModal = document.getElementById('videoSizeModal');
+            const isBackKey = ['Backspace', 'Escape', 'GoBack', 'BrowserBack'].includes(e.key) || [27, 8, 461, 10009].includes(e.keyCode);
 
+            // Universal Back Key Action
+            if (isBackKey) {
+                if (document.fullscreenElement) {
+                    e.preventDefault();
+                    if (document.exitFullscreen) document.exitFullscreen();
+                    return;
+                }
+                if (!videoSizeModal.classList.contains('hidden')) {
+                    e.preventDefault();
+                    videoSizeModal.classList.add('hidden');
+                    return;
+                }
+                if (!headerMenu.classList.contains('hidden')) {
+                    e.preventDefault();
+                    headerMenu.classList.add('hidden');
+                    return;
+                }
+                if (focusableChannels.length > 0 && document.activeElement.tagName !== 'DIV') {
+                    e.preventDefault();
+                    focusableChannels[0].focus();
+                    return;
+                }
+            }
+
+            if (focusableChannels.length === 0) return;
             const currentIndex = focusableChannels.indexOf(document.activeElement);
 
             switch (e.key) {
