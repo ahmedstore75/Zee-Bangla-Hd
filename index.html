@@ -21,13 +21,20 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
+        /* Standard Active Channel (Dark Mode) */
+        #channelContainer .active-channel {
+            border: 2px solid #ef4444 !important;
+            background: linear-gradient(180deg, rgba(239, 68, 68, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.35) !important;
+        }
+
         /* Light Theme Overrides */
         body.light-theme {
             background-color: #f8fafc !important;
             color: #0f172a !important;
         }
         body.light-theme .glass-card {
-            background: rgba(255, 255, 255, 0.9) !important;
+            background: rgba(255, 255, 255, 0.95) !important;
             border-color: #cbd5e1 !important;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
         }
@@ -53,7 +60,7 @@
         }
         body.light-theme input, 
         body.light-theme select {
-            background-color: #f1f5f9 !important;
+            background-color: #ffffff !important;
             border-color: #cbd5e1 !important;
             color: #0f172a !important;
         }
@@ -67,19 +74,24 @@
         }
         body.light-theme #channelContainer > div {
             background-color: #ffffff !important;
-            border-color: #e2e8f0 !important;
+            border: 1px solid #e2e8f0 !important;
         }
         body.light-theme #channelContainer > div:hover {
-            background-color: #f1f5f9 !important;
+            background-color: #f8fafc !important;
         }
-        body.light-theme #channelContainer .bg-slate-950 {
-            background-color: #e2e8f0 !important;
+        body.light-theme #channelContainer .bg-slate-950,
+        body.light-theme #channelContainer .bg-slate-900 {
+            background-color: #f1f5f9 !important;
             border-color: #cbd5e1 !important;
         }
-        body.light-theme .active-channel {
-            border-color: #ef4444 !important;
-            background: linear-gradient(180deg, rgba(239, 68, 68, 0.15) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+
+        /* Fixed Active Channel specifically for Light Theme */
+        body.light-theme #channelContainer .active-channel {
+            border: 2px solid #ef4444 !important;
+            background: #fef2f2 !important;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3) !important;
         }
+
         body.light-theme ::-webkit-scrollbar-track { background: #f1f5f9; }
         body.light-theme ::-webkit-scrollbar-thumb { background: #cbd5e1; }
         body.light-theme ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
@@ -94,13 +106,6 @@
             background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        /* Active Channel Background & Border */
-        .active-channel {
-            border-color: #ef4444 !important;
-            background: linear-gradient(180deg, rgba(239, 68, 68, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
-            box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
         }
 
         .pro-badge {
@@ -203,7 +208,13 @@
             background-color: #000;
         }
 
-        /* ডাবল লোডিং বন্ধ করার ফিক্সিং অংশ */
+        #mainVideo.fit-contain {
+            object-fit: contain !important;
+        }
+        #mainVideo.fit-fill {
+            object-fit: fill !important;
+        }
+
         video::-webkit-media-controls-start-playback-button {
             display: none !important;
         }
@@ -241,7 +252,7 @@
                 </button>
 
                 <!-- Dropdown Menu Box -->
-                <div id="headerMenu" class="hidden absolute right-0 mt-2 w-52 rounded-xl bg-slate-900/95 border border-slate-800 shadow-2xl z-50 p-2 space-y-1 backdrop-blur-xl">
+                <div id="headerMenu" class="hidden absolute right-0 mt-2 w-56 rounded-xl bg-slate-900/95 border border-slate-800 shadow-2xl z-50 p-2 space-y-1 backdrop-blur-xl">
                     
                     <button onclick="showFavorites(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
                         <i class="fa-solid fa-star text-amber-400 text-xs w-4 text-center"></i>
@@ -258,6 +269,21 @@
                     <button onclick="fetchPlaylist(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
                         <i class="fa-solid fa-rotate-right text-blue-400 text-xs w-4 text-center"></i>
                         <span id="mRefreshText" class="font-medium">প্লে-লিস্ট রিফ্রেশ</span>
+                    </button>
+
+                    <button onclick="addCustomPlaylist(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
+                        <i class="fa-solid fa-link text-indigo-400 text-xs w-4 text-center"></i>
+                        <span id="mCustomText" class="font-medium">কাস্টম লিংক প্লে করুন</span>
+                    </button>
+
+                    <button onclick="toggleFullScreen('contain'); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
+                        <i class="fa-solid fa-expand text-pink-400 text-xs w-4 text-center"></i>
+                        <span id="mFsOriginalText" class="font-medium">ফুলস্ক্রিন (অরিজিনাল)</span>
+                    </button>
+
+                    <button onclick="toggleFullScreen('fill'); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
+                        <i class="fa-solid fa-up-right-and-down-left-from-center text-rose-400 text-xs w-4 text-center"></i>
+                        <span id="mFsFitText" class="font-medium">ফুলস্ক্রিন (ফুল ফিট)</span>
                     </button>
 
                     <button onclick="toggleLayout(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
@@ -282,11 +308,6 @@
                         <span id="mSupportText" class="font-medium">সাপোর্ট (Facebook)</span>
                     </a>
 
-                    <button onclick="showAppInfo(); toggleMenu();" class="menu-btn-item w-full text-left px-3 py-1.5 text-xs text-slate-200 rounded-lg flex items-center gap-2">
-                        <i class="fa-solid fa-circle-info text-sky-400 text-xs w-4 text-center"></i>
-                        <span id="mInfoText" class="font-medium">অ্যাপ তথ্য</span>
-                    </button>
-
                 </div>
             </div>
 
@@ -298,7 +319,7 @@
         <div class="glass-card rounded-xl px-2 py-0.5 border border-slate-800/80 shadow-md">
             <div class="flex items-center gap-2">
                 <span class="pure-red-badge text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 flex items-center gap-1 uppercase tracking-wide">
-                    <i class="fa-solid fa-bullhorn text-[8px]"></i> নোটিশ
+                    <i class="fa-solid fa-bullhorn text-[8px]"></i> <span id="noticeBadge">নোটিশ</span>
                 </span>
                 <marquee id="noticeText" behavior="scroll" direction="left" class="text-[10px] text-slate-300 font-medium tracking-wide leading-tight">
                     স্বাগতম! কোনো চ্যানেল লোড না হলে প্লে-লিস্ট রিফ্রেশ করুন অথবা অন্য ক্যাটাগরি থেকে চ্যানেল প্লে করুন। নিরবচ্ছিন্ন লাইভ টিভি উপভোগ করুন।
@@ -312,8 +333,8 @@
 
         <!-- Player Column -->
         <div class="w-full flex flex-col gap-2">
-            <div class="player-3d-card relative w-full bg-black rounded-xl overflow-hidden aspect-video flex items-center justify-center group shadow-2xl">
-                <video id="mainVideo" class="w-full h-full object-fill" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
+            <div id="playerContainer" class="player-3d-card relative w-full bg-black rounded-xl overflow-hidden aspect-video flex items-center justify-center group shadow-2xl">
+                <video id="mainVideo" class="w-full h-full object-fill fit-fill" controls autoplay crossorigin="anonymous" referrerpolicy="no-referrer" playsinline></video>
 
                 <!-- Player Loading & Notice Overlay -->
                 <div id="playerOverlay" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center p-4 text-center z-10 transition-all duration-300">
@@ -395,7 +416,6 @@
             fetchPlaylist();
         });
 
-        // Video Event Listeners for Loading / Buffering States
         function setupVideoListeners() {
             video.addEventListener('playing', () => {
                 hideLoadingOverlay();
@@ -443,6 +463,7 @@
                 themeIcon.className = "fa-solid fa-sun text-yellow-400 text-xs w-4 text-center";
                 themeText.textContent = currentLang === 'bn' ? "লাইট থিম করুন" : "Light Theme";
             }
+            renderChannels(currentlyDisplayedChannels);
         }
 
         function toggleLanguage() {
@@ -454,13 +475,16 @@
                 document.getElementById('mFavText').textContent = "Favorite Channels";
                 document.getElementById('mRecentText').textContent = "Recently Played";
                 document.getElementById('mRefreshText').textContent = "Refresh Playlist";
+                document.getElementById('mCustomText').textContent = "Play Custom Stream";
+                document.getElementById('mFsOriginalText').textContent = "Fullscreen (Original)";
+                document.getElementById('mFsFitText').textContent = "Fullscreen (Full Fit)";
                 document.getElementById('mSupportText').textContent = "Support (Facebook)";
-                document.getElementById('mInfoText').textContent = "App Info";
                 document.getElementById('chListTitle').textContent = "Channel List";
                 document.getElementById('searchInput').placeholder = "Search...";
                 document.getElementById('langText').textContent = "বাংলা ভাষা";
                 document.getElementById('themeText').textContent = isLightTheme ? "Dark Theme" : "Light Theme";
                 document.getElementById('layoutText').textContent = isGridView ? "List View" : "Grid View";
+                document.getElementById('noticeBadge').textContent = "NOTICE";
                 document.getElementById('noticeText').textContent = "Welcome! If a channel does not load, please refresh the playlist or select another channel. Enjoy smooth live streaming.";
             } else {
                 document.getElementById('appTitle').textContent = "আইপি টিভি লাইভ";
@@ -468,13 +492,16 @@
                 document.getElementById('mFavText').textContent = "ফেভারিট চ্যানেল";
                 document.getElementById('mRecentText').textContent = "সাম্প্রতিক প্লে";
                 document.getElementById('mRefreshText').textContent = "প্লে-লিস্ট রিফ্রেশ";
+                document.getElementById('mCustomText').textContent = "কাস্টম লিংক প্লে করুন";
+                document.getElementById('mFsOriginalText').textContent = "ফুলস্ক্রিন (অরিজিনাল)";
+                document.getElementById('mFsFitText').textContent = "ফুলস্ক্রিন (ফুল ফিট)";
                 document.getElementById('mSupportText').textContent = "সাপোর্ট (Facebook)";
-                document.getElementById('mInfoText').textContent = "অ্যাপ তথ্য";
                 document.getElementById('chListTitle').textContent = "চ্যানেল লিস্ট";
                 document.getElementById('searchInput').placeholder = "খুঁজুন...";
                 document.getElementById('langText').textContent = "English Language";
                 document.getElementById('themeText').textContent = isLightTheme ? "ডার্ক থিম করুন" : "লাইট থিম করুন";
                 document.getElementById('layoutText').textContent = isGridView ? "লিস্ট ভিউ চালু করুন" : "গ্রিড ভিউ চালু করুন";
+                document.getElementById('noticeBadge').textContent = "নোটিশ";
                 document.getElementById('noticeText').textContent = "স্বাগতম! কোনো চ্যানেল লোড না হলে প্লে-লিস্ট রিফ্রেশ করুন অথবা অন্য ক্যাটাগরি থেকে চ্যানেল প্লে করুন। নিরবচ্ছিন্ন লাইভ টিভি উপভোগ করুন।";
             }
 
@@ -497,11 +524,56 @@
             }
         }
 
-        function showAppInfo() {
-            if (currentLang === 'bn') {
-                alert("আইপি টিভি লাইভ - Pro Max\nভার্সন: ৪.৩ (CORS Proxy Protection Engine)\nহাই-স্পিড অ্যান্টি-ব্লকিং প্লেয়ার।");
+        function toggleFullScreen(mode = 'fill') {
+            const playerElem = document.getElementById('playerContainer');
+            
+            if (mode === 'contain') {
+                video.classList.remove('fit-fill');
+                video.classList.add('fit-contain');
             } else {
-                alert("IPTV Live - Pro Max\nVersion: 4.3 (CORS Proxy Protection Engine)\nHigh-speed Anti-Blocking Player.");
+                video.classList.remove('fit-contain');
+                video.classList.add('fit-fill');
+            }
+
+            if (!document.fullscreenElement) {
+                if (playerElem.requestFullscreen) {
+                    playerElem.requestFullscreen();
+                } else if (playerElem.webkitRequestFullscreen) {
+                    playerElem.webkitRequestFullscreen();
+                } else if (playerElem.msRequestFullscreen) {
+                    playerElem.msRequestFullscreen();
+                }
+            }
+        }
+
+        function shareChannel(url, event) {
+            if (event) event.stopPropagation();
+            if (navigator.share) {
+                navigator.share({
+                    title: 'IPTV Live',
+                    text: 'Watch live TV stream!',
+                    url: url
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(url);
+                alert(currentLang === 'bn' ? "চ্যানেল স্ট্রিম লিঙ্ক কপি করা হয়েছে!" : "Channel stream URL copied!");
+            }
+        }
+
+        function addCustomPlaylist() {
+            const promptMsg = currentLang === 'bn' ? "আপনার M3U8 বা প্লে-লিস্টের সরাসরি URL লিংকটি দিন:" : "Enter your direct M3U8 or stream URL:";
+            const customUrl = prompt(promptMsg);
+            if (customUrl && customUrl.trim() !== "") {
+                const customChannel = {
+                    name: currentLang === 'bn' ? "কাস্টম স্ট্রিম" : "Custom Stream",
+                    group: "Custom",
+                    logo: "",
+                    url: customUrl.trim()
+                };
+                allChannels.unshift(customChannel);
+                populateCategories(allChannels);
+                renderChannels(allChannels);
+                playChannel(customChannel.url);
             }
         }
 
@@ -627,10 +699,9 @@
                 <div onclick="playChannel(decodeURIComponent('${encodedUrl}'))" 
                     class="p-2 rounded-lg border border-slate-800/80 cursor-pointer hover:bg-slate-800/60 transition flex items-center justify-between gap-1.5 ${isActive ? 'active-channel' : ''}">
                     <div class="flex items-center gap-2 overflow-hidden flex-1 flex-channel-info">
-                        <!-- Fallback Logo Box -->
-                        <div class="w-10 h-10 rounded-md bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden p-0.5 relative">
+                        <div class="w-10 h-10 rounded-md bg-slate-900 border border-slate-800 flex items-center justify-center shrink-0 overflow-hidden p-0.5 relative">
                             <i class="fa-solid fa-tv text-xs text-blue-400 opacity-80"></i>
-                            ${ch.logo ? `<img src="${ch.logo}" class="absolute inset-0 w-full h-full object-contain bg-slate-950" onerror="this.style.display='none'">` : ''}
+                            ${ch.logo ? `<img src="${ch.logo}" class="absolute inset-0 w-full h-full object-contain" onerror="this.style.display='none'">` : ''}
                         </div>
                         <div class="overflow-hidden w-full">
                             <h4 class="text-[11px] font-bold text-slate-100 truncate leading-tight">${ch.name}</h4>
@@ -638,6 +709,9 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-1.5 shrink-0 mt-1">
+                        <button onclick="shareChannel(decodeURIComponent('${encodedUrl}'), event)" class="p-0.5 hover:scale-125 transition text-xs text-slate-500 hover:text-blue-400" title="Share Channel">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </button>
                         <button onclick="toggleFavorite(decodeURIComponent('${encodedUrl}'), event)" class="p-0.5 hover:scale-125 transition text-xs">
                             <i class="${isFav ? 'fa-solid text-amber-400' : 'fa-regular text-slate-500'} fa-star"></i>
                         </button>
@@ -683,7 +757,6 @@
 
             renderChannels(currentlyDisplayedChannels);
 
-            // Show Loading Indicator
             const loadTitle = currentLang === 'bn' ? `${ch.name} লোড হচ্ছে...` : `Loading ${ch.name}...`;
             const loadDesc = currentLang === 'bn' ? "দয়া করে অপেক্ষা করুন, স্ট্রিম কানেক্ট করা হচ্ছে।" : "Please wait, connecting stream.";
             showLoadingState(loadTitle, loadDesc);
